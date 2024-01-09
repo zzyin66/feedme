@@ -1,0 +1,56 @@
+version: "3.8"
+
+services:
+  redis:
+    container_name: redis-container
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+  db:
+    container_name: db-container
+    image: postgres:latest
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./.env.dev
+    environment:
+      POSTGRES_DB: feedme
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+
+  web:
+    container_name: web-container
+    restart: always
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    env_file:
+      - ./.env.dev
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+    links:
+      - db
+
+  celery:
+    container_name: celery-container
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    command: celery -A api worker --loglevel=info
+    volumes:
+      - .:/app
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - redis
+      - db
+
+volumes:
+  postgres_data:
