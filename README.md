@@ -1,1 +1,109 @@
-# feedme
+# Feed me
+
+How to set up your macbook to read the news (very easy)
+
+## Run Locally
+
+Clone the project
+
+```bash
+  git clone git@github.com:zzyin66/feedme.git
+```
+
+Go to the project directory and activate your python environment
+
+```bash
+  cd feedme/app
+  python3 -m venv env
+  source env/bin/activate
+```
+
+Just make sure you have this thing
+
+- Docker
+
+Build if you need to
+
+```bash
+  docker compose build
+```
+
+Start the server
+
+```bash
+  docker compose up
+```
+
+Frontend
+
+```bash
+  Yeah I haven't gotten there yet but it's node
+
+  npm start
+```
+
+## Makefile
+
+I wrote a Makefile with some useful commands so we can type less. Make sure you're in project root when you run this stuff.
+
+- This one connects you to the postgres db so you can mess with the tables.
+
+```bash
+  make use-db
+
+  #show all tables
+  >> \dt
+
+  #show table details
+  >> \d [your table name]
+  >> SELECT * FROM ...;
+```
+
+- This opens up an interactive shell for you that's already attached to the web container, this is where you would run most of your commands.
+
+```bash
+  make shell
+  >> python manage.py ...
+  >> pip install '56 Chepstow close London ontario'
+```
+
+- This opens up a python shell within the web container, this is where you'd run actual python code.
+
+```bash
+  make pyshell
+  >> print("IvYsAuR")
+```
+
+## Seeding your database / running scraper
+
+We don't have a seed script yet, so for now your only option to populate your db is to run the scraper. (takes maybe 10 minutes)
+
+By the way we use celery for tasks, it also runs in a container so you don't have to install anything.
+
+Run the server
+
+```bash
+  docker compose up
+```
+
+In a separate terminal, open up a python shell and import/run your desired task
+
+```bash
+  make pyshell
+  >> from core.tasks import <your task>
+  >> <your task>()
+```
+
+You should check your docker logs in your terminal if you didn't run it detached. Otherwise go to your docker dashboard and check the celery container. There should be articles scraped every few seconds so if it worked you should see logs.
+
+## Installing things/packages
+
+Remember to activate your virtual environment kids!
+
+```bash
+make shell
+>> pip install [56 Chepstow close London ontario]
+>> exit
+```
+
+Also please be a kind gentleman and add your install packages to `requirements.txt`.
