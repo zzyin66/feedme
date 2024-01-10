@@ -10,19 +10,17 @@ Clone the project
   git clone git@github.com:zzyin66/feedme.git
 ```
 
-Go to the project directory and activate your python environment
+Make sure you're in project root, and intialize/activate python virtual env (there's a make command for it)
 
 ```bash
-  cd feedme/app
-  python3 -m venv env
-  source env/bin/activate
+  make pyenv
 ```
 
-Just make sure you have this thing
+Have this thing installed
 
 - Docker
 
-Update local permissions to run docker entrypoint script
+Update local permissions to run docker entrypoint script (should only need to be ran once)
 
 ```bash
   chmod +x app/entrypoint.sh
@@ -55,13 +53,13 @@ I wrote a Makefile with some useful commands so we can type less. Make sure you'
 - This one connects you to the postgres db so you can mess with the tables.
 
 ```bash
-  make use-db
+  make db
 
   #show all tables
   >> \dt
 
   #show table details
-  >> \d [your table name]
+  >> \d <your table name>
   >> SELECT * FROM ...;
 ```
 
