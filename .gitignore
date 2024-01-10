@@ -8,6 +8,10 @@ devenv
 .pyc
 __pycache__
 
+#virtual environemnt folder
+env
+venv
+
 # Docker generated files/folder from config
 db
 
