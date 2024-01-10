@@ -22,7 +22,13 @@ Just make sure you have this thing
 
 - Docker
 
-Build if you need to
+Update local permissions to run docker entrypoint script
+
+```bash
+  chmod +x app/entrypoint.sh
+```
+
+Build the image
 
 ```bash
   docker compose build
