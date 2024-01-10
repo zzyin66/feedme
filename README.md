@@ -38,6 +38,14 @@ Start the server
 docker compose up
 ```
 
+If db containers have no realations, it's probably b/c you need to apply migrations
+
+```bash
+make shell
+>> python manage.py makemigrations
+>> python manage.py migrate
+```
+
 Frontend
 
 ```bash
