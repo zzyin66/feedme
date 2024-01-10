@@ -100,6 +100,17 @@ In a separate terminal, open up a python shell and import/run your desired task
 
 You should check your docker logs in your terminal if you didn't run it detached. Otherwise go to your docker dashboard and check the celery container. There should be articles scraped every few seconds so if it worked you should see logs.
 
+## Migrations
+
+Yeah I'm not sure if I set up docker volume properly so that migrations are applied to db, but whenever you change a model -> shell into container and
+makemigrations -> migrate.
+
+```bash
+make shell
+>> python manage.py makemigrations
+>> python manage.py migrate
+```
+
 ## Installing things/packages
 
 Remember to activate your virtual environment kids!
