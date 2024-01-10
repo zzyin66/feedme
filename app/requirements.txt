@@ -5,3 +5,6 @@ news-please
 scikit-learn
 celery==5.3.6
 redis
+djangorestframework
+django-cors-headers
+PyJWT
