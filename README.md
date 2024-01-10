@@ -7,13 +7,13 @@ How to set up your macbook to read the news (very easy)
 Clone the project
 
 ```bash
-  git clone git@github.com:zzyin66/feedme.git
+git clone git@github.com:zzyin66/feedme.git
 ```
 
 Make sure you're in project root, and intialize/activate python virtual env (there's a make command for it)
 
 ```bash
-  make pyenv
+make pyenv
 ```
 
 Have this thing installed
@@ -23,27 +23,25 @@ Have this thing installed
 Update local permissions to run docker entrypoint script (should only need to be ran once)
 
 ```bash
-  chmod +x app/entrypoint.sh
+chmod +x app/entrypoint.sh
 ```
 
 Build the image
 
 ```bash
-  docker compose build
+docker compose build
 ```
 
 Start the server
 
 ```bash
-  docker compose up
+docker compose up
 ```
 
 Frontend
 
 ```bash
-  Yeah I haven't gotten there yet but it's node
-
-  npm start
+npm start
 ```
 
 ## Makefile
@@ -53,29 +51,29 @@ I wrote a Makefile with some useful commands so we can type less. Make sure you'
 - This one connects you to the postgres db so you can mess with the tables.
 
 ```bash
-  make db
+make db
 
-  #show all tables
-  >> \dt
+#show all tables
+>> \dt
 
-  #show table details
-  >> \d <your table name>
-  >> SELECT * FROM ...;
+#show table details
+>> \d <your table name>
+>> SELECT * FROM ...;
 ```
 
 - This opens up an interactive shell for you that's already attached to the web container, this is where you would run most of your commands.
 
 ```bash
-  make shell
-  >> python manage.py ...
-  >> pip install '56 Chepstow close London ontario'
+make shell
+>> python manage.py ...
+>> pip install '56 Chepstow close London ontario'
 ```
 
 - This opens up a python shell within the web container, this is where you'd run actual python code.
 
 ```bash
-  make pyshell
-  >> print("IvYsAuR")
+make pyshell
+>> print("IvYsAuR")
 ```
 
 ## Seeding your database / running scraper
@@ -87,15 +85,15 @@ By the way we use celery for tasks, it also runs in a container so you don't hav
 Run the server
 
 ```bash
-  docker compose up
+docker compose up
 ```
 
 In a separate terminal, open up a python shell and import/run your desired task
 
 ```bash
-  make pyshell
-  >> from core.tasks import <your task>
-  >> <your task>()
+make pyshell
+>> from core.tasks import <your task>
+>> <your task>()
 ```
 
 You should check your docker logs in your terminal if you didn't run it detached. Otherwise go to your docker dashboard and check the celery container. There should be articles scraped every few seconds so if it worked you should see logs.
