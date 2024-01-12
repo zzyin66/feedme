@@ -12,10 +12,13 @@ import Container from "@mui/material/Container";
 import { useTheme } from "@mui/material";
 import * as yup from "yup";
 import { useFormik } from "formik";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export function Register() {
   const theme = useTheme();
   const [loading, setLoading] = React.useState(false);
+  const navigate = useNavigate();
   const validateSchema = yup.object({
     username: yup
       .string()
@@ -36,13 +39,18 @@ export function Register() {
       password: "",
     },
     validationSchema: validateSchema,
-    onSubmit: (values, { resetForm }) => {
-      console.log(values);
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        await axios.post("http://localhost:8000/api/register/", {
+          email: values.email,
+          password: values.password,
+          username: values.username,
+        });
         resetForm();
-      }, 1000 * 2);
+        navigate("/login");
+      } catch (error) {
+        console.error(error);
+      }
     },
   });
 
