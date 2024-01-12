@@ -19,14 +19,14 @@ export function Register() {
   const validateSchema = yup.object({
     username: yup
       .string()
-      .min(2, "Too Short!")
-      .max(50, "Too Long!")
+      .min(2, "Username too short")
+      .max(50, "Username too long")
       .required("Username is required"),
     email: yup.string().email().required("Email is required"),
     password: yup
       .string()
       .required("Password is required")
-      .min(6, "Password is too short - should be 6 chars minimum"),
+      .min(6, "Password must be longer than 6 characters"),
   });
 
   const formik = useFormik({
@@ -45,20 +45,6 @@ export function Register() {
       }, 1000 * 2);
     },
   });
-  //   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-  //     event.preventDefault();
-  //     const formData = {
-  //       username: event.currentTarget.username.value,
-  //       email: event.currentTarget.email.value,
-  //       password: event.currentTarget.password.value,
-  //     };
-
-  //     console.log({
-  //       email: formData.email,
-  //       username: formData.username,
-  //       password: formData.password,
-  //     });
-  //   };
 
   return (
     <Container
@@ -102,7 +88,6 @@ export function Register() {
             helperText={formik.touched.username && formik.errors.username}
             onBlur={formik.handleBlur}
             autoComplete="username"
-            autoFocus
             color="secondary"
           />
           <TextField
@@ -118,7 +103,6 @@ export function Register() {
             helperText={formik.touched.email && formik.errors.email}
             onBlur={formik.handleBlur}
             autoComplete="email"
-            autoFocus
             color="secondary"
           />
           <TextField
