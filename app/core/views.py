@@ -9,21 +9,20 @@ from .recommendations.hybrid import hybrid_recommendations
 from .serializers import UserSerializer, NewsArticleSerializer
 from rest_framework.exceptions import NotFound
 from rest_framework.pagination import PageNumberPagination
-import jwt, datetime
+from rest_framework.permissions import IsAuthenticated
+import jwt
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework import status
 
 class Recommendations(APIView):
+    permission_classes = (IsAuthenticated, )
     def get(self, request):
-        token = request.COOKIES.get('jwt')
+        token_user_email = request.user.email
         
-        if not token:
-            raise AuthenticationFailed('Unauthenticated')
+        user = User.objects.get(email=token_user_email)
         
-        try:
-            payload = jwt.decode(token, 'feedme', algorithms=['HS256'])
-        except jwt.ExpiredSignatureError:
-            raise AuthenticationFailed('Unauthenticated')
-        
-        user = User.objects.get(id=payload['id'])
+        if not user:
+            raise User.DoesNotExist
         
         hybrid_recommendations(user.id)
         recommendations = user.recommendations.all()
@@ -33,22 +32,13 @@ class Recommendations(APIView):
         return Response(serializer.data)
 
 class MarkArticle(APIView):
+    permission_classes = (IsAuthenticated,)
     def post(self, request):
-        token = request.COOKIES.get('jwt')
-            
-        if not token:
-            raise AuthenticationFailed('Unauthenticated')
-            
-        try:
-            payload = jwt.decode(token, 'feedme', algorithms=['HS256'])
-        except jwt.ExpiredSignatureError:
-            raise AuthenticationFailed('Unauthenticated')
-
-        user_id = payload['id']
+        token_user_email = request.user.email
         feed_id = request.data['feed_id']
         
         try:
-            user = User.objects.get(id=user_id)
+            user = User.objects.get(email=token_user_email)
             if user.feed_history.filter(id=feed_id).exists():
                 return Response("article read!")
             feed = NewsArticle.objects.get(id=feed_id)
@@ -79,73 +69,32 @@ class Register(APIView):
         serializer.save()
         
         return Response(serializer.data)
-    
-class Login(APIView):
-    def post(self, request):
-        email = request.data['email']
-        password = request.data['password']
-        
-        user = User.objects.filter(email=email).first()
-        
-        if user is None:
-            raise AuthenticationFailed('User not found')
-        
-        if not user.check_password(password):
-            raise AuthenticationFailed('Incorrect password')
-        
-
-        payload = {
-            'id': str(user.id),
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=3),
-            'iat': datetime.datetime.utcnow()
-        }
-        
-        token = jwt.encode(payload, 'feedme', algorithm='HS256')
-        
-        response = Response()
-        
-        response.set_cookie(key='jwt', value=token, httponly=True)
-        response.data = {
-            'jwt': token
-        }
-        
-        return response
 
 class UserView(APIView):
+    permission_classes = (IsAuthenticated,)
     def get(self, request):
-        token = request.COOKIES.get('jwt')
+        token_user_email = request.user.email
         
-        if not token:
-            raise AuthenticationFailed('Unauthenticated')
-        
-        try:
-            payload = jwt.decode(token, 'feedme', algorithms=['HS256'])
-        except jwt.ExpiredSignatureError:
-            raise AuthenticationFailed('Unauthenticated')
-        
-        user = User.objects.get(id=payload['id'])
+        user = User.objects.get(email=token_user_email)
         serializer = UserSerializer(user)
         
         return Response(serializer.data)
     
 class Logout(APIView):
-    def post(self, request):
-        response = Response()
-        response.delete_cookie('jwt')
-        response.data = {
-            'message': "success"
-        }
-        
-        return response
-    
+     permission_classes = (IsAuthenticated,)
+     def post(self, request):
+        try:
+            refresh_token = request.data["refresh_token"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
 class Newsfeed(ListAPIView):
     pagination_class = PageNumberPagination
-
+    permission_classes = (IsAuthenticated,)
     def get_queryset(self):
-        token = self.request.COOKIES.get('jwt')
-        if not token:
-            raise AuthenticationFailed('Unauthenticated')
-
         category = self.request.query_params.get('category')
         newsfeed = NewsArticle.objects.filter(category=category).order_by('-date')
         if not newsfeed:

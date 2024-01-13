@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -27,7 +27,12 @@ const pages = [
   { text: "World", href: "/world" },
 ];
 
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = [
+  { text: "Profile", href: "/" },
+  { text: "Account", href: "/science" },
+  { text: "Dashboard", href: "/sports" },
+  { text: "Logout", href: "/logout" },
+];
 
 export const NavBar = () => {
   const theme = useTheme();
@@ -51,7 +56,8 @@ export const NavBar = () => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (href: string) => {
+    navigate(href);
     setAnchorElUser(null);
   };
 
@@ -178,8 +184,11 @@ export const NavBar = () => {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem
+                  key={setting.text}
+                  onClick={() => handleCloseUserMenu(setting.href)}
+                >
+                  <Typography textAlign="center">{setting.text}</Typography>
                 </MenuItem>
               ))}
             </Menu>

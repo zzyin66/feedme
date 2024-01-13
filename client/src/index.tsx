@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./components/App";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import "./interceptors/axios";
 
 const theme = createTheme({
   palette: {

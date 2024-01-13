@@ -17,7 +17,6 @@ import axios from "axios";
 
 export function Register() {
   const theme = useTheme();
-  const [loading, setLoading] = React.useState(false);
   const navigate = useNavigate();
   const validateSchema = yup.object({
     username: yup
@@ -41,7 +40,7 @@ export function Register() {
     validationSchema: validateSchema,
     onSubmit: async (values, { resetForm }) => {
       try {
-        await axios.post("http://localhost:8000/api/register/", {
+        await axios.post("register/", {
           email: values.email,
           password: values.password,
           username: values.username,

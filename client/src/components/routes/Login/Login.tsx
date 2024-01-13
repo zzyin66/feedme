@@ -10,17 +10,47 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useTheme } from "@mui/material";
+import { useFormik } from "formik";
+import axios from "axios";
+import * as yup from "yup";
+import { useNavigate } from "react-router-dom";
 
 export function Login() {
   const theme = useTheme();
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+  const navigate = useNavigate();
+  const validateSchema = yup.object({
+    username: yup.string().required("Username is required"),
+    password: yup.string().required("Password is required"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+    },
+    validationSchema: validateSchema,
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        const res = await axios.post(
+          "token/",
+          {
+            username: values.username,
+            password: values.password,
+          },
+          { headers: { "Content-Type": "application/json" } }
+        );
+        resetForm();
+        localStorage.setItem("access_token", res.data.access);
+        localStorage.setItem("refresh_token", res.data.refresh);
+        axios.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${res.data["access"]}`;
+        navigate("/");
+      } catch (error) {
+        console.error(error);
+      }
+    },
+  });
 
   return (
     <Container
@@ -50,17 +80,21 @@ export function Login() {
         <Typography component="h1" variant="h5">
           Log in
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <form onSubmit={formik.handleSubmit}>
           <TextField
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
+            id="username"
+            label="Username"
+            name="username"
+            autoComplete="username"
             color="secondary"
+            onChange={formik.handleChange}
+            value={formik.values.username}
+            error={formik.touched.username && Boolean(formik.errors.username)}
+            helperText={formik.touched.username && formik.errors.username}
+            onBlur={formik.handleBlur}
           />
           <TextField
             margin="normal"
@@ -72,16 +106,23 @@ export function Login() {
             id="password"
             autoComplete="current-password"
             color="secondary"
+            onChange={formik.handleChange}
+            value={formik.values.password}
+            error={formik.touched.password && Boolean(formik.errors.password)}
+            helperText={formik.touched.password && formik.errors.password}
+            onBlur={formik.handleBlur}
           />
           <Button
             type="submit"
             fullWidth
             variant="contained"
             color="secondary"
+            disabled={!formik.isValid}
             sx={{ mt: 3, mb: 2 }}
           >
             Log In
           </Button>
+
           <Grid container>
             <Grid item xs>
               <Link
@@ -102,7 +143,7 @@ export function Login() {
               </Link>
             </Grid>
           </Grid>
-        </Box>
+        </form>
       </Box>
     </Container>
   );
