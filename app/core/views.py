@@ -10,16 +10,14 @@ from .serializers import UserSerializer, NewsArticleSerializer
 from rest_framework.exceptions import NotFound
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
-import jwt
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 
 class Recommendations(APIView):
     permission_classes = (IsAuthenticated, )
     def get(self, request):
-        token_user_email = request.user.email
-        
-        user = User.objects.get(email=token_user_email)
+        token_username = request.user.username
+        user = User.objects.get(username=token_username)
         
         if not user:
             raise User.DoesNotExist

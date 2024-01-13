@@ -8,11 +8,11 @@ import "./interceptors/axios";
 const theme = createTheme({
   palette: {
     primary: {
-      contrastText: "#424d56",
-      main: "#ffffff",
+      contrastText: "#ffffff",
+      main: "#12122b",
     },
     secondary: {
-      main: "#12122b",
+      main: "#ffffff",
     },
   },
   spacing: 2,

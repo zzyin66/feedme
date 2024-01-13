@@ -29,8 +29,8 @@ const pages = [
 
 const settings = [
   { text: "Profile", href: "/" },
-  { text: "Account", href: "/science" },
-  { text: "Dashboard", href: "/sports" },
+  { text: "Account", href: "/" },
+  { text: "Dashboard", href: "/" },
   { text: "Logout", href: "/logout" },
 ];
 
@@ -57,12 +57,13 @@ export const NavBar = () => {
   };
 
   const handleCloseUserMenu = (href: string) => {
-    navigate(href);
+    // TO FIX
+    href === "/logout" && navigate(href);
     setAnchorElUser(null);
   };
 
   return (
-    <AppBar position="fixed">
+    <AppBar position="sticky">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <LunchDiningIcon
