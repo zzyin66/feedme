@@ -89,7 +89,6 @@ export function Login() {
             label="Username"
             name="username"
             autoComplete="username"
-            color="secondary"
             onChange={formik.handleChange}
             value={formik.values.username}
             error={formik.touched.username && Boolean(formik.errors.username)}
@@ -105,7 +104,6 @@ export function Login() {
             type="password"
             id="password"
             autoComplete="current-password"
-            color="secondary"
             onChange={formik.handleChange}
             value={formik.values.password}
             error={formik.touched.password && Boolean(formik.errors.password)}

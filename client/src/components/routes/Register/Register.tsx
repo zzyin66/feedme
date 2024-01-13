@@ -95,7 +95,6 @@ export function Register() {
             helperText={formik.touched.username && formik.errors.username}
             onBlur={formik.handleBlur}
             autoComplete="username"
-            color="secondary"
           />
           <TextField
             margin="normal"
@@ -110,7 +109,6 @@ export function Register() {
             helperText={formik.touched.email && formik.errors.email}
             onBlur={formik.handleBlur}
             autoComplete="email"
-            color="secondary"
           />
           <TextField
             margin="normal"
@@ -126,7 +124,6 @@ export function Register() {
             type="password"
             id="password"
             autoComplete="current-password"
-            color="secondary"
           />
           <Button
             type="submit"

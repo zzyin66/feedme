@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { NavBar } from "../../lib/Navbar";
 import axios from "axios";
 import { NewsCard } from "./NewsCard";
-import { Box, Grid, useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 
 export interface NewsFeedItem {
   title: string;
@@ -12,7 +12,7 @@ export interface NewsFeedItem {
   image: string;
 }
 
-export const NewsFeed = () => {
+export const HomePage = () => {
   const theme = useTheme();
   const [newsfeed, setNewsFeed] = useState<NewsFeedItem[]>([]);
   useEffect(() => {
@@ -33,7 +33,11 @@ export const NewsFeed = () => {
     getNewsFeed();
   }, []);
   return (
-    <Box width="100vw" sx={{ backgroundColor: theme.palette.primary.main }}>
+    <Box
+      width="100vw"
+      minHeight="100vh"
+      sx={{ backgroundColor: theme.palette.primary.main }}
+    >
       <NavBar />
       <Box
         sx={{
