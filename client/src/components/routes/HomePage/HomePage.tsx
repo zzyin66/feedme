@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { NavBar } from "../../lib/Navbar";
 import axios from "axios";
 import { NewsCard } from "./NewsCard";
-import { Box, useTheme } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 
 export interface NewsFeedItem {
   title: string;
@@ -38,7 +37,15 @@ export const HomePage = () => {
       minHeight="100vh"
       sx={{ backgroundColor: theme.palette.primary.main }}
     >
-      <NavBar />
+      <Box>
+        <Typography
+          variant="h1"
+          fontWeight={600}
+          color={theme.palette.primary.contrastText}
+        >
+          Feeed
+        </Typography>
+      </Box>
       <Box
         sx={{
           display: "grid",
@@ -47,9 +54,8 @@ export const HomePage = () => {
           gridTemplateColumns: "repeat(3, 1fr)",
         }}
       >
-        {newsfeed.map((feed) => (
-          <NewsCard item={feed} key={feed.title} />
-        ))}
+        {newsfeed &&
+          newsfeed.map((feed) => <NewsCard item={feed} key={feed.title} />)}
       </Box>
     </Box>
   );
