@@ -16,15 +16,15 @@ import { useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const pages = [
-  { text: "Home", href: "/" },
-  { text: "Science", href: "/science" },
-  { text: "Sports", href: "/sports" },
-  { text: "Health", href: "/health" },
-  { text: "Entertainment", href: "/entertainment" },
-  { text: "Technology", href: "/technology" },
-  { text: "Business", href: "/business" },
-  { text: "Nation", href: "/nation" },
-  { text: "World", href: "/world" },
+  { text: "Home", href: "/home" },
+  { text: "Science", href: "/category/science" },
+  { text: "Sports", href: "/category/sports" },
+  { text: "Health", href: "/category/health" },
+  { text: "Entertainment", href: "/category/entertainment" },
+  { text: "Technology", href: "/category/technology" },
+  { text: "Business", href: "/category/business" },
+  { text: "Nation", href: "/category/nation" },
+  { text: "World", href: "/category/world" },
 ];
 
 const settings = [
@@ -85,7 +85,6 @@ export const NavBar = () => {
           >
             FeedMe
           </Typography>
-
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"

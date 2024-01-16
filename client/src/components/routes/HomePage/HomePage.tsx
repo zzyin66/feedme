@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { NavBar } from '../../lib/Navbar';
 import axios from 'axios';
 import { NewsCard } from './NewsCard';
 import { Box, ButtonBase, Typography, useTheme } from '@mui/material';
@@ -40,7 +39,15 @@ export const HomePage = () => {
       minHeight='100vh'
       sx={{ backgroundColor: theme.palette.primary.main }}
     >
-      <NavBar />
+      <Box>
+        <Typography
+          variant='h1'
+          fontWeight={600}
+          color={theme.palette.primary.contrastText}
+        >
+          Feeed
+        </Typography>
+      </Box>
       <Box
         sx={{
           // backgroundColor: 'blue',
