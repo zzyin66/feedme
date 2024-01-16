@@ -39,15 +39,6 @@ export const HomePage = () => {
       minHeight='100vh'
       sx={{ backgroundColor: theme.palette.primary.main }}
     >
-      <Box>
-        <Typography
-          variant='h1'
-          fontWeight={600}
-          color={theme.palette.primary.contrastText}
-        >
-          Feeed
-        </Typography>
-      </Box>
       <Box
         sx={{
           // backgroundColor: 'blue',
@@ -59,9 +50,15 @@ export const HomePage = () => {
         <Box
           sx={{
             width: 1000,
-            padding: theme.spacing(16),
           }}
         >
+          <Typography
+            variant='h1'
+            fontWeight={600}
+            color={theme.palette.primary.contrastText}
+          >
+            Feeed
+          </Typography>
           {newsfeed[0] !== undefined && <TopStoryCard item={newsfeed[0]} />}
           <ButtonBase
             sx={{
