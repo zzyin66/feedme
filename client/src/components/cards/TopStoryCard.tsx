@@ -8,25 +8,25 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { NewsFeedItem } from './HomePage';
+import { NewsFeedItem } from '../routes/HomePage/HomePage';
 
 interface NewsCardProps {
   item: NewsFeedItem;
 }
 
-export const NewsCard = ({ item }: NewsCardProps) => {
+export const TopStoryCard = ({ item }: NewsCardProps) => {
   const theme = useTheme();
+  console.log(item);
   return (
     <Card sx={{ borderRadius: '16px' }}>
-      <CardMedia sx={{ height: 140 }} image={item.image} />
+      <CardMedia sx={{ height: 300 }} image={item.image} />
       <CardContent>
-        <Typography gutterBottom variant='h6' component='div'>
+        <Typography gutterBottom variant='h5' component='div'>
           {item.title}
         </Typography>
-        {/* Normally a card doesnt have description */}
-        {/* <Typography variant='body2' color='text.secondary'>
+        <Typography variant='body2' color='text.secondary'>
           {item.description}
-        </Typography> */}
+        </Typography>
       </CardContent>
       <CardActions>
         <Button size='small'>Button1</Button>

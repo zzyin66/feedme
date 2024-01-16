@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { NavBar } from "../../lib/Navbar";
-import axios from "axios";
-import { NewsCard } from "./NewsCard";
-import { Box, useTheme } from "@mui/material";
+import React, { useEffect, useState } from 'react';
+import { NavBar } from '../../lib/Navbar';
+import axios from 'axios';
+import { NewsCard } from './NewsCard';
+import { Box, ButtonBase, Typography, useTheme } from '@mui/material';
+import { TopStoryCard } from '../../cards/TopStoryCard';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 export interface NewsFeedItem {
   title: string;
@@ -18,9 +20,9 @@ export const HomePage = () => {
   useEffect(() => {
     const getNewsFeed = async () => {
       try {
-        const res = await axios.get("recommendations/", {
+        const res = await axios.get('recommendations/', {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            Authorization: `Bearer ${localStorage.getItem('access_token')}`,
           },
         });
 
@@ -34,22 +36,50 @@ export const HomePage = () => {
   }, []);
   return (
     <Box
-      width="100vw"
-      minHeight="100vh"
+      // width='100vw' I dont think this is necessary. In fact, it makes overflow?
+      minHeight='100vh'
       sx={{ backgroundColor: theme.palette.primary.main }}
     >
       <NavBar />
       <Box
         sx={{
-          display: "grid",
-          gap: theme.spacing(2),
-          padding: theme.spacing(2),
-          gridTemplateColumns: "repeat(3, 1fr)",
+          // backgroundColor: 'blue',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
         }}
       >
-        {newsfeed.map((feed) => (
-          <NewsCard item={feed} key={feed.title} />
-        ))}
+        <Box
+          sx={{
+            width: 1000,
+            padding: theme.spacing(16),
+          }}
+        >
+          {newsfeed[0] !== undefined && <TopStoryCard item={newsfeed[0]} />}
+          <ButtonBase
+            sx={{
+              margin: theme.spacing(32, 0, 8),
+            }}
+            // TODO: This button should take you somewhere
+          >
+            <Typography variant='h4' color={'#FFF'}>
+              Your Top Stories
+            </Typography>
+            <ChevronRightIcon fontSize='large' sx={{ color: '#FFF' }} />
+          </ButtonBase>
+          <Box
+            sx={{
+              display: 'grid',
+              gap: theme.spacing(16),
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              alignSelf: 'center',
+            }}
+          >
+            {newsfeed.map((feed) => (
+              <NewsCard item={feed} key={feed.title} />
+            ))}
+          </Box>
+        </Box>
       </Box>
     </Box>
   );
