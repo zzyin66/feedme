@@ -22,7 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
 class NewsArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = NewsArticle
-        fields = ['description', 'title', 'url', 'date', 'image', 'category']
+        fields = ['id', 'description', 'title', 'url', 'date', 'image', 'category']
         extra_kwargs = {
             'keywords': {'required': False}
         }

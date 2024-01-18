@@ -140,7 +140,7 @@ export function Register() {
             <Link
               href="/login"
               variant="body2"
-              color={theme.palette.primary.contrastText}
+              color={theme.palette.primary.main}
             >
               Have an account? Sign in
             </Link>

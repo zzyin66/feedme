@@ -4,11 +4,13 @@ import { NewsCard } from "./NewsCard";
 import { Box, Typography, useTheme } from "@mui/material";
 
 export interface NewsFeedItem {
+  id: string;
   title: string;
   description: string;
   date: string;
   category: string;
   image: string;
+  url: string;
 }
 
 export const HomePage = () => {
@@ -32,11 +34,7 @@ export const HomePage = () => {
     getNewsFeed();
   }, []);
   return (
-    <Box
-      width="100vw"
-      minHeight="100vh"
-      sx={{ backgroundColor: theme.palette.primary.main }}
-    >
+    <Box minHeight="100vh" sx={{ backgroundColor: theme.palette.primary.main }}>
       <Box>
         <Typography
           variant="h1"

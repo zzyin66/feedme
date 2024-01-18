@@ -123,11 +123,7 @@ export function Login() {
 
           <Grid container>
             <Grid item xs>
-              <Link
-                href="#"
-                variant="body2"
-                color={theme.palette.primary.contrastText}
-              >
+              <Link href="#" variant="body2" color={theme.palette.primary.main}>
                 Forgot password?
               </Link>
             </Grid>
@@ -135,7 +131,7 @@ export function Login() {
               <Link
                 href="/register"
                 variant="body2"
-                color={theme.palette.primary.contrastText}
+                color={theme.palette.primary.main}
               >
                 No account? Sign Up
               </Link>
