@@ -38,6 +38,13 @@ Start the server
 docker compose up
 ```
 
+DO NOT RUN!!! I made a mistake setting up the volume, it might be annonymouse -> will nuke your images on compose down.
+Unless you want to re-run the scraper each time you spool up containers, just ctrl-c please.
+
+```bash
+docker compose down
+```
+
 If db containers have no realations, it's probably b/c you need to apply migrations
 
 ```bash
@@ -86,6 +93,12 @@ make pyshell
 >> print("IvYsAuR")
 ```
 
+- This runs the scraper for you, basically opens up a pyshell and executes scraper commands for you.
+
+```bash
+make scrape
+```
+
 ## Seeding your database / running scraper
 
 We don't have a seed script yet, so for now your only option to populate your db is to run the scraper. (takes maybe 10 minutes)
@@ -98,12 +111,10 @@ Run the server
 docker compose up
 ```
 
-In a separate terminal, open up a python shell and import/run your desired task
+Run the scraper from project root. (Where makefile is located).
 
 ```bash
-make pyshell
->> from core.tasks import <your task>
->> <your task>()
+make scrape
 ```
 
 You should check your docker logs in your terminal if you didn't run it detached. Otherwise go to your docker dashboard and check the celery container. There should be articles scraped every few seconds so if it worked you should see logs.
