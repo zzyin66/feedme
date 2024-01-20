@@ -37,7 +37,7 @@ export const HomePage = () => {
     <Box
       // width='100vw' I dont think this is necessary. In fact, it makes overflow?
       minHeight='100vh'
-      sx={{ backgroundColor: theme.palette.primary.main }}
+      sx={{ backgroundColor: theme.palette.primary.main, paddingBottom: 48 }}
     >
       <Box
         sx={{
@@ -57,7 +57,7 @@ export const HomePage = () => {
             fontWeight={600}
             color={theme.palette.primary.contrastText}
           >
-            Feeed
+            Feed
           </Typography>
           {newsfeed[0] !== undefined && <TopStoryCard item={newsfeed[0]} />}
           <ButtonBase
@@ -79,10 +79,34 @@ export const HomePage = () => {
               alignSelf: 'center',
             }}
           >
-            {newsfeed.map((feed) => (
+            {newsfeed.slice(1, 7).map((feed) => (
               <NewsCard item={feed} key={feed.title} />
             ))}
           </Box>
+          <div>
+            <ButtonBase
+              sx={{
+                margin: theme.spacing(32, 0, 8),
+              }}
+              // TODO: This button should take you somewhere
+            >
+              <Typography variant='h4' color={'#FFF'}>
+                Recent
+              </Typography>
+              <ChevronRightIcon fontSize='large' sx={{ color: '#FFF' }} />
+            </ButtonBase>
+          </div>
+          <ButtonBase
+            sx={{
+              margin: theme.spacing(32, 0, 8),
+            }}
+            // TODO: This button should take you somewhere
+          >
+            <Typography variant='h4' color={'#FFF'}>
+              Your Top Category
+            </Typography>
+            <ChevronRightIcon fontSize='large' sx={{ color: '#FFF' }} />
+          </ButtonBase>
         </Box>
       </Box>
     </Box>
