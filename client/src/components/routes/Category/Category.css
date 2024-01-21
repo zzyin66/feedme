@@ -1,0 +1,17 @@
+#category-header {
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--font-dark);
+  margin-bottom: 6vw;
+}
+
+#category-header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+#category-subheader {
+  margin-bottom: 1vw;
+}

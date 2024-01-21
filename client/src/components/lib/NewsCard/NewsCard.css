@@ -1,0 +1,23 @@
+#newscard-main {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 2vw;
+  gap: 2vw;
+}
+
+#newscard-media {
+  width: 300px;
+  height: 200px;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}
+
+#newscard-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}

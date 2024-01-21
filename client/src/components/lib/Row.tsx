@@ -7,7 +7,13 @@ interface RowProps {
 
 export const Row = ({ children }: RowProps) => {
   return (
-    <Stack spacing={2} direction="row">
+    <Stack
+      spacing={2}
+      direction="row"
+      margin="16px"
+      justifyContent="center"
+      alignItems="center"
+    >
       {children}
     </Stack>
   );

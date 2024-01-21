@@ -2,23 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { NewsFeedItem } from "../HomePage";
 import axios from "axios";
-import LunchDiningIcon from "@mui/icons-material/LunchDining";
-import {
-  Box,
-  IconButton,
-  ImageList,
-  ImageListItem,
-  ImageListItemBar,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import "./Category.css";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Column } from "../../lib/Column";
+import { NewsCard } from "../../lib/NewsCard/";
 
 export const Category = () => {
   const navigate = useNavigate();
   const { category } = useParams();
-  const theme = useTheme();
   const [newsfeed, setNewsFeed] = useState<NewsFeedItem[]>([]);
   const [pageIndex, setPageIndex] = useState(1);
   const [hasMore, setHasMore] = useState(true);
@@ -54,7 +44,18 @@ export const Category = () => {
   }, [category]);
 
   return (
-    <Box minHeight="100vh" sx={{ backgroundColor: theme.palette.primary.main }}>
+    <div id="page">
+      <div id="category-header">
+        <div id="header">{category}</div>
+        <div id="category-header-actions">
+          <a>filter icon</a>
+          <a>refresh icon</a>
+        </div>
+      </div>
+      <div id="category-subheader">
+        <div id="subheader">Most recent</div>
+      </div>
+
       <InfiniteScroll
         dataLength={newsfeed.length}
         next={getNewsFeed}
@@ -67,63 +68,8 @@ export const Category = () => {
           </p>
         }
       >
-        <ImageList
-          variant="masonry"
-          sx={{ transform: "translateZ(0)" }}
-          cols={3}
-          gap={8}
-        >
-          {newsfeed &&
-            newsfeed.map(
-              (feed) =>
-                feed.image && (
-                  <ImageListItem
-                    key={feed.image}
-                    sx={{ color: theme.palette.primary.contrastText }}
-                  >
-                    <img
-                      srcSet={`${feed.image}?w=161&fit=crop&auto=format&dpr=2 2x`}
-                      src={`${feed.image}?w=161&fit=crop&auto=format`}
-                      alt={feed.title}
-                      loading="lazy"
-                    />
-                    <ImageListItemBar
-                      sx={{
-                        color: "#12122b",
-                        background: theme.palette.primary.contrastText,
-                      }}
-                      title={feed.date}
-                      position="below"
-                      actionIcon={
-                        <IconButton
-                          sx={{ color: "#12122b" }}
-                          aria-label={`star ${feed.date}`}
-                        >
-                          <LunchDiningIcon />
-                        </IconButton>
-                      }
-                      actionPosition="left"
-                    />
-                    <Box
-                      padding={theme.spacing(4)}
-                      sx={{
-                        backgroundColor: theme.palette.primary.contrastText,
-                      }}
-                    >
-                      <Column gap={4}>
-                        <Typography variant="h5" sx={{ color: "#12122b" }}>
-                          {feed.title}
-                        </Typography>
-                        <Typography variant="body1" sx={{ color: "#12122b" }}>
-                          {feed.description}
-                        </Typography>
-                      </Column>
-                    </Box>
-                  </ImageListItem>
-                )
-            )}
-        </ImageList>
+        {newsfeed && newsfeed.map((nf) => <NewsCard item={nf} />)}
       </InfiniteScroll>
-    </Box>
+    </div>
   );
 };

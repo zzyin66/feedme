@@ -8,13 +8,12 @@ import { Logout } from "./routes/Logout";
 import { HomePage } from "./routes/HomePage";
 import { Category } from "./routes/Category";
 import { NavBar } from "./lib/Navbar";
-import { Box } from "@mui/material";
-import { Column } from "./lib/Column";
+import { Row } from "./lib/Row";
 
 function App() {
   return (
     <BrowserRouter>
-      <Column>
+      <Row>
         <NavBar />
         <Routes>
           <Route
@@ -38,7 +37,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="*" element={<Navigate to="/home" replace />} />
         </Routes>
-      </Column>
+      </Row>
     </BrowserRouter>
   );
 }
