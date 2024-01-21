@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { NewsCard } from "./NewsCard";
 import { Box, Typography, useTheme } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export interface NewsFeedItem {
   id: string;
@@ -14,6 +15,7 @@ export interface NewsFeedItem {
 }
 
 export const HomePage = () => {
+  const navigate = useNavigate();
   const theme = useTheme();
   const [newsfeed, setNewsFeed] = useState<NewsFeedItem[]>([]);
   useEffect(() => {
@@ -26,8 +28,11 @@ export const HomePage = () => {
         });
 
         setNewsFeed(res.data);
-      } catch (error) {
+      } catch (error: any) {
         console.error(error);
+        if (error.response.status === 401) {
+          navigate("/login");
+        }
       }
     };
 

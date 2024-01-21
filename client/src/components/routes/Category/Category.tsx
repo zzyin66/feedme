@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { NewsFeedItem } from "../HomePage";
 import axios from "axios";
 import LunchDiningIcon from "@mui/icons-material/LunchDining";
@@ -16,6 +16,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { Column } from "../../lib/Column";
 
 export const Category = () => {
+  const navigate = useNavigate();
   const { category } = useParams();
   const theme = useTheme();
   const [newsfeed, setNewsFeed] = useState<NewsFeedItem[]>([]);
@@ -35,12 +36,16 @@ export const Category = () => {
       setNewsFeed((prevNewsFeed) => [...prevNewsFeed, ...res.data.results]);
       setHasMore(res.data.next != null);
       setPageIndex((prevPageIndex) => prevPageIndex + 1);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      if (error.response.status === 401) {
+        navigate("/login");
+      }
     }
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     setPageIndex(1);
     setHasMore(true);
     setNewsFeed([]);
