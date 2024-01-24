@@ -21,7 +21,7 @@
   padding: 0;
 }
 
-#subheader {
+.subheader {
   font-size: var(--subheader-font);
   color: var(--font-dark);
   font-weight: var(--subheader-font-weight);
@@ -35,7 +35,7 @@
   padding: 0;
 }
 
-#text {
+.text {
   font-size: var(--text-font);
   color: var(--font-light);
   font-weight: var(--text-font-weight);

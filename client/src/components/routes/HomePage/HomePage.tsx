@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { NewsCard } from '../../lib/NewsCard/NewsCard';
 import { useNavigate } from 'react-router-dom';
-import { TopStoryCard } from '../../lib/TopStoryCard/TopStoryCard';
 
 export interface NewsFeedItem {
   id: string;
@@ -52,7 +51,7 @@ export const HomePage = () => {
         >
           Feed
         </div>
-        {newsfeed[0] !== undefined && <TopStoryCard item={newsfeed[0]} />}
+        {newsfeed[0] !== undefined && <NewsCard item={newsfeed[0]} topStory />}
         <div id='h2' style={{ marginBottom: 16 }}>
           Your Top Stories {'>'}
           {/* TODO: use a chevron icon instead of > */}
