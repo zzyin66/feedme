@@ -1,21 +1,38 @@
-import React from "react";
-import { NewsFeedItem } from "../../routes/HomePage";
-import "./NewsCard.css";
+import React from 'react';
+import { NewsFeedItem } from '../../routes/HomePage';
+import './NewsCard.css';
 
 interface NewsCardProps {
   item: NewsFeedItem;
+  topStory?: boolean;
 }
 
-export const NewsCard = ({ item }: NewsCardProps) => {
+export const NewsCard = ({ item, topStory = false }: NewsCardProps) => {
   return (
-    <div id="newscard-main">
-      <div id="newscard-media">
-        <img id="newscard-media" src={item.image} alt="" />
-      </div>
-      <div id="newscard-content">
-        <span id="subheader">{item.title}</span>
-        <p id="text">{item.description}</p>
-      </div>
-    </div>
+    <>
+      {topStory ? (
+        <div className='top newscard-main'>
+          <div className='top newscard-content'>
+            <span className='subheader'>{item.title}</span>
+            <p className='text' style={{ margin: 0 }}>
+              {item.description}
+            </p>
+          </div>
+          <div className='top newscard-media'>
+            <img className='top newscard-media' src={item.image} alt='' />
+          </div>
+        </div>
+      ) : (
+        <div className='newscard-main'>
+          <div className='newscard-media'>
+            <img className='newscard-media' src={item.image} alt='' />
+          </div>
+          <div className='newscard-content'>
+            <span className='subheader'>{item.title}</span>
+            <p className='text'>{item.description}</p>
+          </div>
+        </div>
+      )}
+    </>
   );
 };

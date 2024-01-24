@@ -3,8 +3,6 @@
   height: 100vh;
   margin-left: calc(var(--navbar-width) + 2vw);
   margin-right: 1vw;
-  padding-top: 1vw;
-  padding-left: 1vw;
   background: var(--background);
   color: var(--navbar-light-primary);
 }
@@ -14,10 +12,16 @@
   color: var(--font-dark);
   font-weight: var(--header-font-weight);
   padding: 0;
-  margin-top: 2vw;
 }
 
-#subheader {
+#h2 {
+  font-size: var(--h2-font);
+  color: var(--font-dark);
+  font-weight: var(--h2-font-weight);
+  padding: 0;
+}
+
+.subheader {
   font-size: var(--subheader-font);
   color: var(--font-dark);
   font-weight: var(--subheader-font-weight);
@@ -31,7 +35,7 @@
   padding: 0;
 }
 
-#text {
+.text {
   font-size: var(--text-font);
   color: var(--font-light);
   font-weight: var(--text-font-weight);
