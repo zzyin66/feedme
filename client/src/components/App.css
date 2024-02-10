@@ -25,6 +25,7 @@
   font-size: var(--subheader-font);
   color: var(--font-dark);
   font-weight: var(--subheader-font-weight);
+  text-decoration: none;
   padding: 0;
 }
 
