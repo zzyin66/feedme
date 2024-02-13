@@ -1,5 +1,5 @@
 import React from "react";
-import "./NewsCardNew.css";
+import "./NewsCard.css";
 import { NewsFeedItem } from "../../routes/HomePage";
 import axios from "axios";
 
@@ -8,7 +8,7 @@ interface NewsCardProps {
   topStory?: boolean;
 }
 
-export const NewsCardNew = ({ item, topStory = false }: NewsCardProps) => {
+export const NewsCard = ({ item, topStory = false }: NewsCardProps) => {
   const markAsRead = async () => {
     try {
       await axios.post("mark_read/", {

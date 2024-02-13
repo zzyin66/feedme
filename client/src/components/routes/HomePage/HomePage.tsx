@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { NewsCardNew } from "../../lib/NewsCard/NewsCardNew";
+import { NewsCard } from "../../lib/NewsCard";
 
 export interface NewsFeedItem {
   id: string;
@@ -51,9 +51,7 @@ export const HomePage = () => {
         >
           Feed
         </div>
-        {newsfeed[0] !== undefined && (
-          <NewsCardNew item={newsfeed[0]} topStory />
-        )}
+        {newsfeed[0] !== undefined && <NewsCard item={newsfeed[0]} topStory />}
         <div id="h2" style={{ marginBottom: 16 }}>
           Your Top Stories {">"}
           {/* TODO: use a chevron icon instead of > */}
@@ -61,7 +59,7 @@ export const HomePage = () => {
         {newsfeed &&
           newsfeed
             .slice(1, 7)
-            .map((feed) => <NewsCardNew item={feed} key={feed.title} />)}
+            .map((feed) => <NewsCard item={feed} key={feed.title} />)}
         <div id="h2" style={{ marginBottom: 16 }}>
           Most Recent {">"}
           {/* TODO: use a chevron icon instead of > */}

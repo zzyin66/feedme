@@ -4,7 +4,7 @@ import { NewsFeedItem } from "../HomePage";
 import axios from "axios";
 import "./Category.css";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { NewsCardNew } from "../../lib/NewsCard/NewsCardNew";
+import { NewsCard } from "../../lib/NewsCard";
 
 export const Category = () => {
   const navigate = useNavigate();
@@ -69,7 +69,7 @@ export const Category = () => {
         }
         style={{ overflowX: "hidden", padding: "10px" }}
       >
-        {newsfeed && newsfeed.map((nf) => <NewsCardNew item={nf} />)}
+        {newsfeed && newsfeed.map((nf) => <NewsCard item={nf} />)}
       </InfiniteScroll>
     </div>
   );
