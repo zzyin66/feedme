@@ -8,36 +8,33 @@ import { Logout } from "./routes/Logout";
 import { HomePage } from "./routes/HomePage";
 import { Category } from "./routes/Category";
 import { NavBar } from "./lib/Navbar";
-import { Row } from "./lib/Row";
 
 function App() {
   return (
     <BrowserRouter>
-      <Row>
-        <NavBar />
-        <Routes>
-          <Route
-            path="/home"
-            element={
-              <ProtectedRoute>
-                <HomePage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="category/:category"
-            element={
-              <ProtectedRoute>
-                <Category />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/login" element={<Login />} />
-          <Route path="/logout" element={<Logout />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="*" element={<Navigate to="/home" replace />} />
-        </Routes>
-      </Row>
+      <NavBar />
+      <Routes>
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute>
+              <HomePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="category/:category"
+          element={
+            <ProtectedRoute>
+              <Category />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/login" element={<Login />} />
+        <Route path="/logout" element={<Logout />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="*" element={<Navigate to="/home" replace />} />
+      </Routes>
     </BrowserRouter>
   );
 }

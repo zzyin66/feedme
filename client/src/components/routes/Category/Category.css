@@ -1,4 +1,4 @@
-#category-header {
+.category-header {
   text-transform: uppercase;
   display: flex;
   justify-content: space-between;
@@ -7,11 +7,11 @@
   margin-bottom: 6vw;
 }
 
-#category-header-actions {
+.category-header-actions {
   display: flex;
   gap: 10px;
 }
 
-#category-subheader {
+.category-subheader {
   margin-bottom: 1vw;
 }

@@ -22,14 +22,14 @@ const settings = [
 export const NavBar = () => {
   const navigate = useNavigate();
   return (
-    <div id="nav-bar">
-      <div id="nav-header">
-        <a id="nav-title" href="/home">
+    <div className="nav-bar">
+      <div className="nav-header">
+        <a className="nav-title" href="/home">
           FEEDME
         </a>
         <hr />
       </div>
-      <div id="nav-content">
+      <div className="nav-content">
         {pages.map((page) => (
           <div className="nav-button" onClick={() => navigate(page.href)}>
             <i className="fas fa-palette">icon</i>
@@ -44,17 +44,20 @@ export const NavBar = () => {
           </div>
         ))}
       </div>
-      <input id="nav-footer-toggle" type="checkbox" />
-      <div id="nav-footer">
-        <div id="nav-footer-heading">
-          <div id="nav-footer-avatar">
-            <img src="https://gravatar.com/avatar/4474ca42d303761c2901fa819c4f2547" />
+      <input className="nav-footer-toggle" type="checkbox" />
+      <div className="nav-footer">
+        <div className="nav-footer-heading">
+          <div className="nav-footer-avatar">
+            <img
+              src="https://gravatar.com/avatar/4474ca42d303761c2901fa819c4f2547"
+              alt=""
+            />
           </div>
-          <div id="nav-footer-titlebox">
-            <a id="nav-footer-title" href="/home">
+          <div className="nav-footer-titlebox">
+            <a className="nav-footer-title" href="/home">
               wassup
             </a>
-            <span id="nav-footer-subtitle">User</span>
+            <span className="nav-footer-subtitle">User</span>
           </div>
         </div>
       </div>
