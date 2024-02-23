@@ -141,3 +141,9 @@ make shell
 ```
 
 Also please be a kind gentleman and add your install packages to `requirements.txt`.
+
+## .env
+Copy over `.sample.env` to `.env`
+```bash
+cat ./app/.sample.env > ./app/.env
+```
