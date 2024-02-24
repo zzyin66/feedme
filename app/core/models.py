@@ -22,6 +22,7 @@ class User(AbstractUser):
     feed_history = models.ManyToManyField(NewsArticle, related_name="feed_history")
     recommendations = models.ManyToManyField(NewsArticle, related_name="recommendations")
     keywords = models.JSONField(null=True, blank=True, default=dict)
+    bookmarked = models.ManyToManyField(NewsArticle, related_name="bookmarked")
     
     USERNAME_FIELD = 'username'
     EMAIL_FIELD = 'email'
