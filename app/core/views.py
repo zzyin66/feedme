@@ -28,6 +28,25 @@ class Recommendations(APIView):
         serializer = NewsArticleSerializer(recommendations, many=True)
         
         return Response(serializer.data)
+class BookmarkArticle(APIView):
+    permission_classes = (IsAuthenticated,)
+    def post(self, request):
+        token_user_email = request.user.email
+        feed_id = request.data['feed_id']
+        
+        try:
+            user = User.objects.get(email=token_user_email)
+            if user.bookmarked.filter(id=feed_id).exists():
+                user.bookmarked.remove(feed_id)
+                user.save()
+                return Response("article unbookmarked!")
+                
+            feed = NewsArticle.objects.get(id=feed_id)
+            user.bookmarked.add(feed_id)
+            user.save()
+        except:
+            pass    
+        return Response("article bookmarked!")
 
 class MarkArticle(APIView):
     permission_classes = (IsAuthenticated,)
