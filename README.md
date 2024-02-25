@@ -147,3 +147,4 @@ Copy over `.sample.env` to `.env`
 ```bash
 cat ./app/.sample.env > ./app/.env
 ```
+Please ask for API Kkey
