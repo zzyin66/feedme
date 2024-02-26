@@ -28,8 +28,22 @@ class Recommendations(APIView):
         serializer = NewsArticleSerializer(recommendations, many=True)
         
         return Response(serializer.data)
-class BookmarkArticle(APIView):
+
+class BookmarkArticle(APIView, ListAPIView):
     permission_classes = (IsAuthenticated,)
+    pagination_class = PageNumberPagination
+
+    def get_queryset(self):
+        token_user_email = request.user.email
+        user = User.objects.get(email=token_user_email)
+        return NewsArticle.objects.filter(bookmark__user=user)
+
+    def get(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        page = self.paginate_queryset(queryset)
+        serializer = NewsArticleSerializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
+    
     def post(self, request):
         token_user_email = request.user.email
         feed_id = request.data['feed_id']
