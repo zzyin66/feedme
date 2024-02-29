@@ -13,12 +13,13 @@ import { NavBar } from './lib/Navbar';
 function App() {
   return (
     <BrowserRouter>
-      <NavBar />
+      {/* <NavBar /> */}
       <Routes>
         <Route
           path='/home'
           element={
             <ProtectedRoute>
+              <NavBar />
               <HomePage />
             </ProtectedRoute>
           }
@@ -27,6 +28,7 @@ function App() {
           path='category/:category'
           element={
             <ProtectedRoute>
+              <NavBar />
               <Category />
             </ProtectedRoute>
           }
@@ -34,7 +36,15 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/logout' element={<Logout />} />
         <Route path='/register' element={<Register />} />
-        <Route path='/profile' element={<Profile />} />
+        <Route
+          path='/profile'
+          element={
+            <ProtectedRoute>
+              <NavBar />
+              <Profile />
+            </ProtectedRoute>
+          } 
+        />
 
         <Route path='*' element={<Navigate to='/home' replace />} />
       </Routes>
