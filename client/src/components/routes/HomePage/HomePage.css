@@ -1,4 +1,4 @@
-.category-header {
+.home-header {
   text-transform: uppercase;
   display: flex;
   justify-content: space-between;
@@ -6,12 +6,21 @@
   color: var(--font-dark);
   margin-bottom: 1vw;
 }
+.home-subheader {
+  margin-bottom: 1vw;
+}
 
-.category-header-actions {
+.header {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.home-header-actions {
   display: flex;
   gap: 10px;
 }
 
-.category-subheader {
+.subheader {
   margin-bottom: 1vw;
 }
