@@ -16,6 +16,7 @@ const pages = [
 
 const settings = [
   { text: 'Profile', href: '/' },
+  { text: 'Bookmarks', href: '/bookmarks' },
   { text: 'Logout', href: '/logout' },
 ];
 

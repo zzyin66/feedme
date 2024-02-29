@@ -9,10 +9,11 @@ urlpatterns = [
     path('user/', views.UserView.as_view()),
     path('logout/', views.Logout.as_view()),
     path('feeds/', views.Newsfeed.as_view()),
-    path('token/', 
-        jwt_views.TokenObtainPairView.as_view(), 
-        name ='token_obtain_pair'),
-    path('token/refresh/', 
-        jwt_views.TokenRefreshView.as_view(), 
-        name ='token_refresh')
+    path('token/',
+         jwt_views.TokenObtainPairView.as_view(),
+         name='token_obtain_pair'),
+    path('token/refresh/',
+         jwt_views.TokenRefreshView.as_view(),
+         name='token_refresh'),
+    path('bookmarks/', views.BookmarkView.as_view(), name='bookmarks'),
 ]

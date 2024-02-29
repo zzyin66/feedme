@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from .models import User, NewsArticle
 from rest_framework.views import APIView
@@ -13,28 +13,54 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 
+
 class Recommendations(APIView):
     permission_classes = (IsAuthenticated, )
+
     def get(self, request):
         token_username = request.user.username
         user = User.objects.get(username=token_username)
-        
+
         if not user:
             raise User.DoesNotExist
-        
+
         hybrid_recommendations(user.id)
         recommendations = user.recommendations.all()
-        
+
         serializer = NewsArticleSerializer(recommendations, many=True)
-        
+
         return Response(serializer.data)
+
+
+class BookmarkView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        bookmarks = user.bookmarked.all()
+        serializer = NewsArticleSerializer(bookmarks, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        article_id = request.data.get('article_id')
+        article = get_object_or_404(NewsArticle, pk=article_id)
+        if user.bookmarked.filter(pk=article_id).exists():
+            user.bookmarked.remove(article)
+            message = 'Bookmark removed'
+        else:
+            user.bookmarked.add(article)
+            message = 'Bookmark added'
+        return Response({'message': message}, status=status.HTTP_200_OK)
+
 
 class MarkArticle(APIView):
     permission_classes = (IsAuthenticated,)
+
     def post(self, request):
         token_user_email = request.user.email
         feed_id = request.data['feed_id']
-        
+
         try:
             user = User.objects.get(email=token_user_email)
             if user.feed_history.filter(id=feed_id).exists():
@@ -42,45 +68,49 @@ class MarkArticle(APIView):
             feed = NewsArticle.objects.get(id=feed_id)
             user_keywords = user.keywords
             feed_keywords = feed.keywords
-            
+
             updated_keywords = user_keywords.copy()
-            
+
             for key, value in feed_keywords.items():
                 if key in updated_keywords:
                     key_value = updated_keywords[key]
                     updated_keywords[key] += float(value) + float(key_value)
                 else:
-                    updated_keywords[key] = float(value)   
+                    updated_keywords[key] = float(value)
 
-            
             user.keywords = updated_keywords
             user.feed_history.add(feed_id)
             user.save()
         except:
-            pass    
+            pass
         return Response("article read!")
+
 
 class Register(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        
+
         return Response(serializer.data)
+
 
 class UserView(APIView):
     permission_classes = (IsAuthenticated,)
+
     def get(self, request):
         token_user_email = request.user.email
-        
+
         user = User.objects.get(email=token_user_email)
         serializer = UserSerializer(user)
-        
+
         return Response(serializer.data)
-    
+
+
 class Logout(APIView):
-     permission_classes = (IsAuthenticated,)
-     def post(self, request):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
         try:
             refresh_token = request.data["refresh_token"]
             token = RefreshToken(refresh_token)
@@ -89,12 +119,15 @@ class Logout(APIView):
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
+
 class Newsfeed(ListAPIView):
     pagination_class = PageNumberPagination
     permission_classes = (IsAuthenticated,)
+
     def get_queryset(self):
         category = self.request.query_params.get('category')
-        newsfeed = NewsArticle.objects.filter(category=category).order_by('-date')
+        newsfeed = NewsArticle.objects.filter(
+            category=category).order_by('-date')
         if not newsfeed:
             raise NotFound('No newsfeed found for the specified category')
 
@@ -105,4 +138,3 @@ class Newsfeed(ListAPIView):
         page = self.paginate_queryset(queryset)
         serializer = NewsArticleSerializer(page, many=True)
         return self.get_paginated_response(serializer.data)
-        

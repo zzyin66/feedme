@@ -1,0 +1,37 @@
+/* bookmarks.css */
+.bookmarks-header {
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--font-dark);
+  margin-bottom: 1vw;
+}
+
+.bookmarks-header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.bookmarks-subheader {
+  margin-bottom: 1vw;
+}
+
+.no-bookmarks-message {
+  padding: 20px;
+  text-align: center;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+/* Adjustments for mobile views */
+@media (max-width: 768px) {
+  .bookmarks-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .bookmarks-list {
+    gap: 10px;
+  }
+}
