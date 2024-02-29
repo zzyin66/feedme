@@ -28,4 +28,7 @@ pyenv:
 # Run the scraper
 scrape:
 	@docker exec -it $(WEB_CONTAINER_NAME) python manage.py shell -c "from core.tasks import scrape_news_task; scrape_news_task()"
-	
+
+# Email
+email:
+	@docker exec -it $(WEB_CONTAINER_NAME) python manage.py shell -c "from core.tasks import send_emails_task; send_emails_task()"

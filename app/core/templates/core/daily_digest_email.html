@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 600px;
+        margin: 20px auto;
+        background: #ffffff;
+        padding: 20px;
+      }
+      .header {
+        background-color: #007bff;
+        color: #ffffff;
+        padding: 10px;
+        text-align: center;
+        margin-bottom: 18px;
+      }
+      .article {
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #eeeeee;
+      }
+      .article:last-child {
+        border: none;
+      }
+      .article img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+        transition: transform 0.3s ease;
+        margin-bottom: 4px;
+      }
+      .article img:hover {
+        transform: scale(1.01);
+      }
+      .article-title {
+        color: #007bff;
+        text-decoration: none;
+        font-size: 18px;
+      }
+      .article-title:hover {
+        color: #0056b3;
+        text-decoration: underline;
+      }
+      .article-description,
+      .article-description:visited {
+        text-decoration: none;
+      }
+
+      .article-description:hover,
+      .article-description:focus {
+        text-decoration: underline;
+      }
+
+      .article-description p {
+        margin: 0px 0;
+        color: #333333;
+      }
+      .footer {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 12px;
+        color: #999;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h2>Your FeedMe Daily News Digest</h2>
+      </div>
+      {% for article in recommendations %}
+      <div class="article">
+        <a href="{{ article.url }}">
+          <img src="{{ article.image }}" alt="Article image" />
+        </a>
+        <a href="{{ article.url }}" class="article-title"
+          >{{ article.title }}</a
+        >
+        <a href="{{ article.url }}" class="article-description">
+          <p>{{ article.description }}</p>
+        </a>
+      </div>
+      {% endfor %}
+
+      <div class="footer">
+        You're receiving this email because you subscribed to the FeedMe Daily
+        News Digest.
+      </div>
+    </div>
+  </body>
+</html>
