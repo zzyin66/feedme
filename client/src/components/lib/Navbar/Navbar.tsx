@@ -32,14 +32,22 @@ export const NavBar = () => {
       </div>
       <div className='nav-content'>
         {pages.map((page) => (
-          <div className='nav-button' onClick={() => navigate(page.href)}>
+          <div
+            key={page.href}
+            className='nav-button'
+            onClick={() => navigate(page.href)}
+          >
             <i className='fas fa-palette'>icon</i>
             <span>{page.text}</span>
           </div>
         ))}
         <hr />
         {settings.map((setting) => (
-          <div className='nav-button' onClick={() => navigate(setting.href)}>
+          <div
+            key={setting.href}
+            className='nav-button'
+            onClick={() => navigate(setting.href)}
+          >
             <i className='fas fa-palette'>icon</i>
             <span>{setting.text}</span>
           </div>
@@ -55,7 +63,7 @@ export const NavBar = () => {
             />
           </div>
           <div className='nav-footer-titlebox'>
-            <a className='nav-footer-title' href='/home'>
+            <a className='nav-footer-title' href='/profile'>
               wassup
             </a>
             <span className='nav-footer-subtitle'>User</span>
