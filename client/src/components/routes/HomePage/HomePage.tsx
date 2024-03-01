@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { NewsCard } from '../../lib/NewsCard';
 import './HomePage.css';
+import { CircularProgress } from '@mui/material';
+import PageHeader from '../../lib/Header/Header';
 
 export interface NewsFeedItem {
   id: string;
@@ -24,6 +26,7 @@ export const HomePage = () => {
   const [newsfeed, setNewsFeed] = useState<NewsFeedItem[]>([]);
   const [bookmarkedIds, setBookmarkedIds] = useState(new Set());
   const [bookmarksFetched, setBookmarksFetched] = useState(false);
+  const [loading, setLoading] = useState(true); // State to manage loading status
 
   const fetchBookmarks = async () => {
     try {
@@ -45,6 +48,8 @@ export const HomePage = () => {
 
   const getNewsFeed = async () => {
     try {
+      setLoading(true); // Start loading
+
       const response = await axios.get('recommendations/', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access_token')}`,
@@ -62,6 +67,8 @@ export const HomePage = () => {
       if (error.response && error.response.status === 401) {
         navigate('/login');
       }
+    } finally {
+      setLoading(false); // Stop loading regardless of the outcome
     }
   };
 
@@ -74,21 +81,19 @@ export const HomePage = () => {
     if (bookmarksFetched) {
       getNewsFeed();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bookmarksFetched]);
 
   return (
     <div className='page'>
-      <div className='home-header'>
-        <div className='header'>Home</div>
-        <div className='home-header-actions'>
-          <a href='#'>Filter Icon</a>
-          <a href='#'>Refresh Icon</a>
+      <PageHeader title='Home' subheader='Top Stories' />
+      {loading && (
+        <div
+          style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}
+        >
+          <CircularProgress />
         </div>
-      </div>
-      <div className='home-subheader'>
-        <div className='subheader'>Top Stories</div>
-      </div>
-
+      )}
       {newsfeed.length > 0 && (
         <NewsCard
           item={newsfeed[0]}

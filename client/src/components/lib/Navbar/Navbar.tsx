@@ -1,23 +1,41 @@
 import React from 'react';
 import './Navbar.css';
 import { useNavigate } from 'react-router-dom';
+import {
+  Biotech,
+  Bookmarks,
+  BusinessCenter,
+  Feed,
+  Flag,
+  HealthAndSafety,
+  Logout,
+  Memory,
+  Person,
+  Public,
+  SportsFootball,
+  TheaterComedy,
+} from '@mui/icons-material';
 
 const pages = [
-  { text: 'Home', href: '/home' },
-  { text: 'Science', href: '/category/science' },
-  { text: 'Sports', href: '/category/sports' },
-  { text: 'Health', href: '/category/health' },
-  { text: 'Entertainment', href: '/category/entertainment' },
-  { text: 'Technology', href: '/category/technology' },
-  { text: 'Business', href: '/category/business' },
-  { text: 'Nation', href: '/category/nation' },
-  { text: 'World', href: '/category/world' },
+  { text: 'Home', href: '/home', icon: Feed },
+  { text: 'Science', href: '/category/science', icon: Biotech },
+  { text: 'Sports', href: '/category/sports', icon: SportsFootball },
+  { text: 'Health', href: '/category/health', icon: HealthAndSafety },
+  {
+    text: 'Entertainment',
+    href: '/category/entertainment',
+    icon: TheaterComedy,
+  },
+  { text: 'Technology', href: '/category/technology', icon: Memory },
+  { text: 'Business', href: '/category/business', icon: BusinessCenter },
+  { text: 'Nation', href: '/category/nation', icon: Flag },
+  { text: 'World', href: '/category/world', icon: Public },
 ];
 
 const settings = [
-  { text: 'Profile', href: '/' },
-  { text: 'Bookmarks', href: '/bookmarks' },
-  { text: 'Logout', href: '/logout' },
+  { text: 'Profile', href: '/', icon: Person },
+  { text: 'Bookmarks', href: '/bookmarks', icon: Bookmarks },
+  { text: 'Logout', href: '/logout', icon: Logout },
 ];
 
 export const NavBar = () => {
@@ -37,8 +55,8 @@ export const NavBar = () => {
             className='nav-button'
             onClick={() => navigate(page.href)}
           >
-            <i className='fas fa-palette'>icon</i>
-            <span>{page.text}</span>
+            {React.createElement(page.icon)}
+            <div style={{ marginLeft: 6 }}>{page.text}</div>
           </div>
         ))}
         <hr />
@@ -48,8 +66,8 @@ export const NavBar = () => {
             className='nav-button'
             onClick={() => navigate(setting.href)}
           >
-            <i className='fas fa-palette'>icon</i>
-            <span>{setting.text}</span>
+            {React.createElement(setting.icon)}
+            <div style={{ marginLeft: 6 }}>{setting.text}</div>
           </div>
         ))}
       </div>

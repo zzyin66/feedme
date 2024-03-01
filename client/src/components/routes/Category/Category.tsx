@@ -5,6 +5,8 @@ import axios from 'axios';
 import './Category.css';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { NewsCard } from '../../lib/NewsCard';
+import { CircularProgress } from '@mui/material';
+import PageHeader from '../../lib/Header/Header';
 
 interface BookmarkItem {
   id: number;
@@ -18,6 +20,7 @@ export const Category = () => {
   const [hasMore, setHasMore] = useState(true);
   const [bookmarkedIds, setBookmarkedIds] = useState(new Set());
   const [bookmarksFetched, setBookmarksFetched] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const fetchBookmarks = async () => {
     try {
@@ -41,6 +44,8 @@ export const Category = () => {
 
   const getNewsFeed = async () => {
     try {
+      setLoading(true); // Start loading
+
       const res = await axios.get('feeds/', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access_token')}`,
@@ -60,6 +65,8 @@ export const Category = () => {
       if (error.response.status === 401) {
         navigate('/login');
       }
+    } finally {
+      setLoading(false); // Stop loading regardless of the outcome
     }
   };
 
@@ -83,35 +90,33 @@ export const Category = () => {
 
   return (
     <div className='page'>
-      <div className='category-header'>
-        <div className='header'>{category}</div>
-        <div className='category-header-actions'>
-          <a href='#'>filter icon</a>
-          <a href='#'>refresh icon</a>
+      <PageHeader title={category || ''} subheader='Most recent' />
+      {loading ? (
+        <div
+          style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}
+        >
+          <CircularProgress />
         </div>
-      </div>
-      <div className='category-subheader'>
-        <div className='subheader'>Most recent</div>
-      </div>
-
-      <InfiniteScroll
-        dataLength={newsfeed.length}
-        next={getNewsFeed}
-        hasMore={hasMore}
-        loader={<h4>Loading...</h4>}
-        scrollableTarget='scroll-target'
-        endMessage={
-          <p style={{ textAlign: 'center' }}>
-            <b>Yay! You have seen it all</b>
-          </p>
-        }
-        style={{ overflowX: 'hidden', padding: '10px' }}
-      >
-        {newsfeed &&
-          newsfeed.map((nf) => (
-            <NewsCard item={nf} isBookmarked={nf.isBookmarked} />
-          ))}
-      </InfiniteScroll>
+      ) : (
+        <InfiniteScroll
+          dataLength={newsfeed.length}
+          next={getNewsFeed}
+          hasMore={hasMore}
+          loader={<h4>Loading...</h4>}
+          scrollableTarget='scroll-target'
+          endMessage={
+            <p style={{ textAlign: 'center' }}>
+              <b>Yay! You have seen it all</b>
+            </p>
+          }
+          style={{ overflowX: 'hidden' }}
+        >
+          {newsfeed &&
+            newsfeed.map((nf) => (
+              <NewsCard key={nf.id} item={nf} isBookmarked={nf.isBookmarked} />
+            ))}
+        </InfiniteScroll>
+      )}
     </div>
   );
 };
