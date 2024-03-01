@@ -2,11 +2,11 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import User, NewsArticle
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, UpdateAPIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from .recommendations.hybrid import hybrid_recommendations
-from .serializers import UserSerializer, NewsArticleSerializer
+from .serializers import UserSerializer, NewsArticleSerializer, UpdateUserSerializer
 from rest_framework.exceptions import NotFound
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
@@ -77,6 +77,13 @@ class UserView(APIView):
         serializer = UserSerializer(user)
         
         return Response(serializer.data)
+    
+class UpdateUserView(UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UpdateUserSerializer
+
+    def get_object(self):
+        return self.request.user
     
 class Logout(APIView):
      permission_classes = (IsAuthenticated,)

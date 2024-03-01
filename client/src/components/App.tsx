@@ -9,11 +9,11 @@ import { HomePage } from './routes/HomePage';
 import { Category } from './routes/Category';
 import { Profile } from './routes/Profile';
 import { NavBar } from './lib/Navbar';
+import { UserProvider } from './lib/UserContext';
 
 function App() {
   return (
     <BrowserRouter>
-      {/* <NavBar /> */}
       <Routes>
         <Route
           path='/home'

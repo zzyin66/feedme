@@ -25,8 +25,7 @@ def generate_content_recommendations(id):
         #getting all news feeds that the user has not read
         feeds = NewsArticle.objects.filter(date__gte=date_minimum).exclude(id__in=read_feed_ids)
         
-        #getting the user's keywords
-        user_keywords = user.keywords
+        user_keywords = {**user.keywords}
         
         feed_dict = {}
         for feed in feeds:
