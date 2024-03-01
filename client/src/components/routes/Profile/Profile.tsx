@@ -1,95 +1,123 @@
-import React, { useEffect } from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
-import { Field, useFormik } from 'formik';
-import axios from 'axios';
-import * as yup from 'yup';
-import { useNavigate } from 'react-router-dom';
-import { Autocomplete, Checkbox, Chip, FormControlLabel } from '@mui/material';
+import React, { useEffect, useState } from "react";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
+import { Field, useFormik } from "formik";
+import axios from "axios";
+import * as yup from "yup";
+import { useNavigate } from "react-router-dom";
+import { Autocomplete, Checkbox, Chip, CircularProgress, FormControlLabel } from "@mui/material";
+import PageHeader from "../../lib/Header/Header";
 
 export function Profile() {
+  const [loading, setLoading] = useState(true); // State to manage loading status
   const navigate = useNavigate();
   const validateSchema = yup.object({
-    username: yup.string().required('Name is required'),
-    email: yup.string().email('Invalid email address').required('Email is required'),
+    username: yup.string().required("Name is required"),
+    email: yup
+      .string()
+      .email("Invalid email address")
+      .required("Email is required"),
     preferences: yup.array().of(yup.string()),
     dailyEmailOptIn: yup.boolean(),
   });
 
-
   const formik = useFormik({
     initialValues: {
-      username: '',
-      email: '',
+      username: "",
+      email: "",
       preferences: [],
       daily_email_opt_in: false,
     },
     validationSchema: validateSchema,
-    onSubmit: async (values, { resetForm }) => {
+    onSubmit: async (values) => {
       try {
-        const preferences = values.preferences.reduce<Record<string, number>>((acc, keyword) => {
-          acc[keyword] = 100;
-          return acc;
-        }, {});
-        
-        console.log(preferences)
-        const res = await axios.put('update_user/', {
-          ...values,
-          preferences,
-        }, {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+        setLoading(true); // Start loading
+
+        const preferences = values.preferences.reduce<Record<string, number>>(
+          (acc, keyword) => {
+            acc[keyword] = 100;
+            return acc;
           },
-        });
+          {}
+        );
+
+        console.log(preferences);
+        await axios.put(
+          "update_user/",
+          {
+            ...values,
+            preferences,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
+        );
         // resetForm();
-        navigate(0);
+        // navigate(0);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     },
   });
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get('user/', {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-          },
-        });
-        formik.setValues({
-          ...response.data,
-          preferences: Object.keys(response.data.preferences ?? {})
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  const fetchUserData = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get("user/", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      });
+      formik.setValues({
+        ...response.data,
+        preferences: Object.keys(response.data.preferences ?? {}),
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+
+  useEffect(() => {
     fetchUserData();
   }, []);
 
   return (
-    <Container component="main" maxWidth="xs">
+    <div className='page'>
+      <PageHeader
+        title='User Profile'
+        subheader='Manage your account info'
+        showActions={false}
+      />
+      {loading && (
+        <div
+          style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}
+        >
+          <CircularProgress />
+        </div>
+      )}
       <CssBaseline />
       <Box
         sx={{
           marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
         <Avatar sx={{ m: 1 }}></Avatar>
-        <Typography component="h1" variant="h5">
-          User Profile
-        </Typography>
         <form onSubmit={formik.handleSubmit}>
           <TextField
             margin="normal"
@@ -126,8 +154,8 @@ export function Profile() {
             multiple
             value={formik.values.preferences}
             onChange={(event, newValue) => {
-              formik.setFieldValue('preferences', newValue);
-              console.log(formik.values.preferences)
+              formik.setFieldValue("preferences", newValue);
+              console.log(formik.values.preferences);
             }}
             renderTags={(value, getTagProps) =>
               value.map((option, index) => (
@@ -135,11 +163,7 @@ export function Profile() {
               ))
             }
             renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Preferences"
-                margin="normal"
-              />
+              <TextField {...params} label="Preferences" margin="normal" />
             )}
           />
           <FormControlLabel
@@ -151,7 +175,11 @@ export function Profile() {
                 onChange={formik.handleChange}
               />
             }
-            label="Opt-in for daily emails"
+            label={
+              <Typography color="primary">
+                Opt-in for daily emails
+              </Typography>
+            }
           />
           <Button
             type="submit"
@@ -165,6 +193,6 @@ export function Profile() {
           </Button>
         </form>
       </Box>
-    </Container>
+    </div>
   );
 }
