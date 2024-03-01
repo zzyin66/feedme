@@ -34,7 +34,7 @@ const pages = [
 ];
 
 const settings = [
-  { text: 'Profile', href: '/', icon: Person },
+  { text: 'Profile', href: '/profile', icon: Person },
   { text: 'Bookmarks', href: '/bookmarks', icon: Bookmarks },
   { text: 'Logout', href: '/logout', icon: Logout },
 ];
@@ -72,24 +72,6 @@ export const NavBar = () => {
           </div>
         ))}
       </div>
-      <input className='nav-footer-toggle' type='checkbox' />
-      <div className='nav-footer'>
-        <div className='nav-footer-heading'>
-          <div className='nav-footer-avatar'>
-            <img
-              src='https://gravatar.com/avatar/4474ca42d303761c2901fa819c4f2547'
-              alt=''
-            />
-          </div>
-          <div className='nav-footer-titlebox'>
-            <a className='nav-footer-title' href='/profile'>
-              wassup
-            </a>
-            <span className='nav-footer-subtitle'>User</span>
-          </div>
-        </div>
-      </div>
-      <input className='nav-footer-toggle' type='checkbox' />
       <ProfileInfo />
     </div>
   );

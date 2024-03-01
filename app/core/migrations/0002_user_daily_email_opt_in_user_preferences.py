@@ -20,4 +20,9 @@ class Migration(migrations.Migration):
             name='preferences',
             field=models.JSONField(blank=True, default=dict, null=True),
         ),
+        migrations.AddField(
+            model_name='user',
+            name='bookmarked',
+            field=models.ManyToManyField(related_name='bookmarked', to='core.newsarticle'),
+        ),
     ]

@@ -3,6 +3,20 @@ import './Navbar.css';
 import { useNavigate } from 'react-router-dom';
 import { Popover, Typography } from "@mui/material";
 import axios from "axios";
+import {
+  Biotech,
+  Bookmarks,
+  BusinessCenter,
+  Feed,
+  Flag,
+  HealthAndSafety,
+  Logout,
+  Memory,
+  Person,
+  Public,
+  SportsFootball,
+  TheaterComedy,
+} from '@mui/icons-material';
 
 /**
  * Renders a card with the users profile information that has a popover menu that allows navigation to profile page or logout.
@@ -35,8 +49,8 @@ const ProfileInfo = () => {
   const id = open ? 'simple-popover' : undefined;
 
   const settings = [
-    { text: 'Profile', href: '/profile' },
-    { text: 'Logout', href: '/logout' },
+    { text: 'Profile', href: '/profile', icon: Person },
+    { text: 'Logout', href: '/logout', icon: Logout },
   ];
 
   useEffect(() => {
@@ -95,14 +109,15 @@ const ProfileInfo = () => {
         <div style={{ marginRight: '10px' }}>
           {settings.map((setting) => (
             <div
+              key={setting.href}
               className='nav-button'
               onClick={() => {
-                navigate(setting.href);
                 handleClose();
-              }
-            }>
-              <i className='fas fa-palette'>icon</i>
-              <Typography sx={{ p: 2 }}>{setting.text}</Typography>
+                navigate(setting.href);
+              }}
+            >
+              {React.createElement(setting.icon)}
+              <div style={{ marginLeft: 6 }}>{setting.text}</div>
             </div>
           ))}
         </div>
