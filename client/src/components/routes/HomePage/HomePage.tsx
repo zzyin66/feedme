@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { NewsCard } from "../../lib/NewsCard";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { NewsCard } from '../../lib/NewsCard';
+import './HomePage.css';
+import { CircularProgress } from '@mui/material';
+import PageHeader from '../../lib/Header/Header';
 
 export interface NewsFeedItem {
   id: string;
@@ -11,65 +14,101 @@ export interface NewsFeedItem {
   category: string;
   image: string;
   url: string;
+  isBookmarked: boolean;
+}
+
+interface BookmarkItem {
+  id: number;
 }
 
 export const HomePage = () => {
   const navigate = useNavigate();
   const [newsfeed, setNewsFeed] = useState<NewsFeedItem[]>([]);
-  useEffect(() => {
-    const getNewsFeed = async () => {
-      try {
-        const res = await axios.get("recommendations/", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-          },
-        });
+  const [bookmarkedIds, setBookmarkedIds] = useState(new Set());
+  const [bookmarksFetched, setBookmarksFetched] = useState(false);
+  const [loading, setLoading] = useState(true); // State to manage loading status
 
-        setNewsFeed(res.data);
-      } catch (error: any) {
-        console.error(error);
-        if (error.response.status === 401) {
-          navigate("/login");
-        }
+  const fetchBookmarks = async () => {
+    try {
+      const response = await axios.get('/bookmarks/', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+        },
+      });
+      const bookmarkIds = new Set(
+        response.data.map((item: BookmarkItem) => item.id)
+      );
+      setBookmarkedIds(bookmarkIds);
+    } catch (error) {
+      console.error('Failed to fetch bookmarks:', error);
+    } finally {
+      setBookmarksFetched(true);
+    }
+  };
+
+  const getNewsFeed = async () => {
+    try {
+      setLoading(true); // Start loading
+
+      const response = await axios.get('recommendations/', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+        },
+      });
+
+      const updatedNewsFeed = response.data.map((item: NewsFeedItem) => ({
+        ...item,
+        isBookmarked: bookmarkedIds.has(item.id),
+      }));
+
+      setNewsFeed(updatedNewsFeed);
+    } catch (error: any) {
+      console.error(error);
+      if (error.response && error.response.status === 401) {
+        navigate('/login');
       }
-    };
+    } finally {
+      setLoading(false); // Stop loading regardless of the outcome
+    }
+  };
 
-    getNewsFeed();
-  }, [navigate]);
+  useEffect(() => {
+    setBookmarksFetched(false);
+    fetchBookmarks();
+  }, []);
+
+  useEffect(() => {
+    if (bookmarksFetched) {
+      getNewsFeed();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bookmarksFetched]);
+
   return (
-    <div
-      id="page"
-      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
-    >
-      <div style={{ width: 900 }}>
+    <div className='page'>
+      <PageHeader title='Home' subheader='Top Stories' />
+      {loading && (
         <div
-          id="header"
-          style={{
-            borderBottom: "2px solid black",
-            marginBottom: 8,
-          }}
+          style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}
         >
-          Feed
+          <CircularProgress />
         </div>
-        {newsfeed[0] !== undefined && <NewsCard item={newsfeed[0]} topStory />}
-        <div id="h2" style={{ marginBottom: 16 }}>
-          Your Top Stories {">"}
-          {/* TODO: use a chevron icon instead of > */}
-        </div>
-        {newsfeed &&
-          newsfeed
-            .slice(1, 7)
-            .map((feed) => <NewsCard item={feed} key={feed.title} />)}
-        <div id="h2" style={{ marginBottom: 16 }}>
-          Most Recent {">"}
-          {/* TODO: use a chevron icon instead of > */}
-        </div>
-        <div id="h2" style={{ marginBottom: 16 }}>
-          Your Top Category {">"}
-          {/* TODO: use a chevron icon instead of > */}
-          {/* TODO: Display the top category */}
-        </div>
-      </div>
+      )}
+      {newsfeed.length > 0 && (
+        <NewsCard
+          item={newsfeed[0]}
+          topStory={true}
+          isBookmarked={bookmarkedIds.has(newsfeed[0].id)}
+        />
+      )}
+
+      {newsfeed.slice(1).map((item, index) => (
+        <NewsCard
+          key={index}
+          item={item}
+          isBookmarked={bookmarkedIds.has(item.id)}
+        />
+      ))}
     </div>
   );
 };

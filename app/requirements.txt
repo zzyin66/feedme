@@ -8,3 +8,5 @@ redis
 djangorestframework
 django-cors-headers
 djangorestframework-simplejwt
+sendgrid==6.11.0
+python-dotenv==1.0.1

@@ -10,6 +10,7 @@ import { Category } from './routes/Category';
 import { Profile } from './routes/Profile';
 import { NavBar } from './lib/Navbar';
 import { UserProvider } from './lib/UserContext';
+import { Bookmarks } from './routes/Bookmarks';
 
 function App() {
   return (
@@ -45,7 +46,15 @@ function App() {
             </ProtectedRoute>
           } 
         />
-
+        <Route 
+          path='/bookmarks' 
+          element={
+            <ProtectedRoute>
+              <NavBar />
+              <Bookmarks />
+            </ProtectedRoute>
+          } 
+        />
         <Route path='*' element={<Navigate to='/home' replace />} />
       </Routes>
     </BrowserRouter>

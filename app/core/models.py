@@ -24,7 +24,8 @@ class User(AbstractUser):
     keywords = models.JSONField(null=True, blank=True, default=dict)
     preferences = models.JSONField(null=True, blank=True, default=dict)
     daily_email_opt_in = models.BooleanField(default=False)
-
+    bookmarked = models.ManyToManyField(NewsArticle, related_name="bookmarked")
+    
     USERNAME_FIELD = 'username'
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = []
