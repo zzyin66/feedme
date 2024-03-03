@@ -99,7 +99,6 @@ export function Profile() {
       <PageHeader
         title='User Profile'
         subheader='Manage your account info'
-        showActions={false}
       />
       {loading && (
         <div

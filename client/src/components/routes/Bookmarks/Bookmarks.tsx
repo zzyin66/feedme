@@ -6,11 +6,13 @@ import { NewsCard } from '../../lib/NewsCard';
 import { NewsFeedItem } from '../HomePage';
 import PageHeader from '../../lib/Header/Header';
 import { CircularProgress } from '@mui/material';
+import useSearchFilter from '../../../hooks/useSearchFilter';
 
 export const Bookmarks = () => {
   const navigate = useNavigate();
   const [bookmarks, setBookmarks] = useState<NewsFeedItem[]>([]);
   const [loading, setLoading] = useState(true); // State to manage loading status
+  const { filteredNewsFeed, handleSearchChange } = useSearchFilter(bookmarks);
 
   const getBookmarks = async () => {
     try {
@@ -42,7 +44,7 @@ export const Bookmarks = () => {
       <PageHeader
         title='Bookmarks'
         subheader='Your bookmarked articles'
-        showActions={false}
+        onSearchChange={handleSearchChange}
       />
       {loading ? (
         <div
@@ -54,9 +56,13 @@ export const Bookmarks = () => {
         <>
           {bookmarks.length > 0 ? (
             <div>
-              {bookmarks.map((bookmark, index) => (
-                <NewsCard key={index} item={bookmark} isBookmarked={true} />
-              ))}
+              {filteredNewsFeed.length > 0 ? (
+                filteredNewsFeed.map((nf) => (
+                  <NewsCard key={nf.id} item={nf} isBookmarked={true} />
+                ))
+              ) : (
+                <p className='no-search-message'>No results found.</p>
+              )}
             </div>
           ) : (
             <div className='no-bookmarks-message'>

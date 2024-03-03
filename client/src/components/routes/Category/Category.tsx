@@ -7,6 +7,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { NewsCard } from '../../lib/NewsCard';
 import { CircularProgress } from '@mui/material';
 import PageHeader from '../../lib/Header/Header';
+import useSearchFilter from '../../../hooks/useSearchFilter';
 
 interface BookmarkItem {
   id: number;
@@ -21,6 +22,7 @@ export const Category = () => {
   const [bookmarkedIds, setBookmarkedIds] = useState(new Set());
   const [bookmarksFetched, setBookmarksFetched] = useState(false);
   const [loading, setLoading] = useState(true);
+  const { filteredNewsFeed, handleSearchChange } = useSearchFilter(newsfeed);
 
   const fetchBookmarks = async () => {
     try {
@@ -90,7 +92,11 @@ export const Category = () => {
 
   return (
     <div className='page'>
-      <PageHeader title={category || ''} subheader='Most recent' />
+      <PageHeader
+        title={category || ''}
+        subheader='Most recent'
+        onSearchChange={handleSearchChange}
+      />
       {loading ? (
         <div
           style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}
@@ -111,10 +117,13 @@ export const Category = () => {
           }
           style={{ overflowX: 'hidden' }}
         >
-          {newsfeed &&
-            newsfeed.map((nf) => (
+          {filteredNewsFeed.length > 0 ? (
+            filteredNewsFeed.map((nf) => (
               <NewsCard key={nf.id} item={nf} isBookmarked={nf.isBookmarked} />
-            ))}
+            ))
+          ) : (
+            <p className='no-search-message'>No results found.</p>
+          )}
         </InfiniteScroll>
       )}
     </div>
