@@ -3,6 +3,7 @@ import './NewsCard.css';
 import { NewsFeedItem } from '../../routes/HomePage';
 import axios from 'axios';
 import IconButton from '@mui/material/IconButton';
+import Snackbar from '@mui/material/Snackbar';
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import BookmarkRemoveIcon from '@mui/icons-material/BookmarkRemove';
 
@@ -27,6 +28,8 @@ export const NewsCard = ({
 }: NewsCardProps) => {
   // State to track if the current article is bookmarked
   const [currBookmarked, setCurrBookmarked] = useState(isBookmarked);
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
 
   const toggleBookmark = async () => {
     try {
@@ -40,11 +43,19 @@ export const NewsCard = ({
         }
       );
 
+      // Determine the action message
+      const message = currBookmarked ? 'Bookmark removed' : 'Bookmark added';
+      setToastMessage(message);
+
       // Toggle the bookmark state upon successful request
       setCurrBookmarked((curr) => !curr);
+
+      // Open the toast notification
+      setToastOpen(true);
     } catch (error) {
       console.error(error);
-      // TODO: handle this error
+      setToastMessage('Failed to toggle bookmark');
+      setToastOpen(true);
     }
   };
 
@@ -121,6 +132,13 @@ export const NewsCard = ({
             </IconButton>
           </div>
         </div>
+        <Snackbar
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          open={toastOpen}
+          autoHideDuration={6000}
+          onClose={() => setToastOpen(false)}
+          message={toastMessage}
+        />
       </div>
     );
   }
