@@ -5,6 +5,7 @@ import { NewsCard } from '../../lib/NewsCard';
 import './HomePage.css';
 import { CircularProgress } from '@mui/material';
 import PageHeader from '../../lib/Header/Header';
+import useSearchFilter from '../../../hooks/useSearchFilter';
 
 export interface NewsFeedItem {
   id: string;
@@ -27,6 +28,9 @@ export const HomePage = () => {
   const [bookmarkedIds, setBookmarkedIds] = useState(new Set());
   const [bookmarksFetched, setBookmarksFetched] = useState(false);
   const [loading, setLoading] = useState(true); // State to manage loading status
+  const { filteredNewsFeed, handleSearchChange } = useSearchFilter(
+    newsfeed.slice(1)
+  );
 
   const fetchBookmarks = async () => {
     try {
@@ -86,29 +90,35 @@ export const HomePage = () => {
 
   return (
     <div className='page'>
-      <PageHeader title='Home' subheader='Top Stories' />
-      {loading && (
+      <PageHeader
+        title='Home'
+        subheader='Top Stories'
+        onSearchChange={handleSearchChange}
+      />
+      {loading ? (
         <div
           style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}
         >
           <CircularProgress />
         </div>
+      ) : (
+        <>
+          {newsfeed.length > 0 && (
+            <NewsCard
+              item={newsfeed[0]}
+              topStory={true}
+              isBookmarked={bookmarkedIds.has(newsfeed[0].id)}
+            />
+          )}
+          {filteredNewsFeed.length > 0 ? (
+            filteredNewsFeed.map((nf) => (
+              <NewsCard key={nf.id} item={nf} isBookmarked={nf.isBookmarked} />
+            ))
+          ) : (
+            <p className='no-search-message'>No results found.</p>
+          )}
+        </>
       )}
-      {newsfeed.length > 0 && (
-        <NewsCard
-          item={newsfeed[0]}
-          topStory={true}
-          isBookmarked={bookmarkedIds.has(newsfeed[0].id)}
-        />
-      )}
-
-      {newsfeed.slice(1).map((item, index) => (
-        <NewsCard
-          key={index}
-          item={item}
-          isBookmarked={bookmarkedIds.has(item.id)}
-        />
-      ))}
     </div>
   );
 };
