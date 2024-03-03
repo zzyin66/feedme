@@ -1,21 +1,19 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-import { Field, useFormik } from "formik";
+import { useFormik } from "formik";
 import axios from "axios";
 import * as yup from "yup";
-import { useNavigate } from "react-router-dom";
-import { Autocomplete, Checkbox, Chip, CircularProgress, FormControlLabel } from "@mui/material";
+import { Autocomplete, Checkbox, Chip, CircularProgress, FormControlLabel, Snackbar, TextField, Typography } from "@mui/material";
 import PageHeader from "../../lib/Header/Header";
 
 export function Profile() {
   const [loading, setLoading] = useState(true); // State to manage loading status
-  const navigate = useNavigate();
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  
   const validateSchema = yup.object({
     username: yup.string().required("Name is required"),
     email: yup
@@ -46,7 +44,6 @@ export function Profile() {
           {}
         );
 
-        console.log(preferences);
         await axios.put(
           "update_user/",
           {
@@ -60,10 +57,12 @@ export function Profile() {
             },
           }
         );
-        // resetForm();
-        // navigate(0);
+        setToastMessage("User profile updated");
+        setToastOpen(true);
       } catch (error) {
         console.error(error);
+        setToastMessage("Failed to update user profile");
+        setToastOpen(true);
       } finally {
         setLoading(false);
       }
@@ -193,6 +192,13 @@ export function Profile() {
           </Button>
         </form>
       </Box>
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        open={toastOpen}
+        autoHideDuration={6000}
+        onClose={() => setToastOpen(false)}
+        message={toastMessage}
+      />
     </div>
   );
 }
