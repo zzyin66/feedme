@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { NewsFeedItem } from '../HomePage';
-import axios from 'axios';
-import './Category.css';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import { NewsCard } from '../../lib/NewsCard';
-import { CircularProgress } from '@mui/material';
-import PageHeader from '../../lib/Header/Header';
-import useSearchFilter from '../../../hooks/useSearchFilter';
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { NewsFeedItem } from "../HomePage";
+import axios from "axios";
+import "./Category.css";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { NewsCard } from "../../lib/NewsCard";
+import { CircularProgress } from "@mui/material";
+import PageHeader from "../../lib/Header/Header";
+import useSearchFilter from "../../../hooks/useSearchFilter";
 
 interface BookmarkItem {
   id: number;
@@ -26,9 +26,9 @@ export const Category = () => {
 
   const fetchBookmarks = async () => {
     try {
-      const response = await axios.get('/bookmarks/', {
+      const response = await axios.get("/bookmarks/", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
       });
       const bookmarkIds = new Set(
@@ -36,7 +36,7 @@ export const Category = () => {
       );
       setBookmarkedIds(bookmarkIds);
     } catch (error) {
-      console.error('Failed to fetch bookmarks:', error);
+      console.error("Failed to fetch bookmarks:", error);
       // TODO: handle error
     } finally {
       // Indicate that the bookmark fetch attempt has completed => fetch the feed
@@ -48,9 +48,9 @@ export const Category = () => {
     try {
       setLoading(true); // Start loading
 
-      const res = await axios.get('feeds/', {
+      const res = await axios.get("feeds/", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
         params: { category: category, page: pageIndex },
       });
@@ -65,7 +65,7 @@ export const Category = () => {
     } catch (error: any) {
       console.error(error);
       if (error.response.status === 401) {
-        navigate('/login');
+        navigate("/login");
       }
     } finally {
       setLoading(false); // Stop loading regardless of the outcome
@@ -91,41 +91,43 @@ export const Category = () => {
   }, [bookmarksFetched]);
 
   return (
-    <div className='page'>
+    <div className="page">
       <PageHeader
-        title={category || ''}
-        subheader='Most recent'
+        title={category || ""}
+        subheader="Most recent"
         onSearchChange={handleSearchChange}
       />
-      {loading ? (
-        <div
-          style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}
-        >
-          <CircularProgress />
-        </div>
-      ) : (
-        <InfiniteScroll
-          dataLength={newsfeed.length}
-          next={getNewsFeed}
-          hasMore={hasMore}
-          loader={<h4>Loading...</h4>}
-          scrollableTarget='scroll-target'
-          endMessage={
-            <p style={{ textAlign: 'center' }}>
-              <b>Yay! You have seen it all</b>
-            </p>
-          }
-          style={{ overflowX: 'hidden' }}
-        >
-          {filteredNewsFeed.length > 0 ? (
-            filteredNewsFeed.map((nf) => (
+
+      <InfiniteScroll
+        dataLength={newsfeed.length}
+        next={getNewsFeed}
+        hasMore={hasMore}
+        loader={
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              padding: "20px",
+            }}
+          >
+            <CircularProgress />
+          </div>
+        }
+        scrollableTarget="scroll-target"
+        endMessage={
+          <p style={{ textAlign: "center" }}>
+            <b>Yay! You have seen it all</b>
+          </p>
+        }
+        style={{ overflowX: "hidden" }}
+      >
+        {filteredNewsFeed.length > 0
+          ? filteredNewsFeed.map((nf) => (
               <NewsCard key={nf.id} item={nf} isBookmarked={nf.isBookmarked} />
             ))
-          ) : (
-            <p className='no-search-message'>No results found.</p>
-          )}
-        </InfiniteScroll>
-      )}
+          : newsfeed.length > 0 &&
+            !loading && <p className="no-search-message">No results found.</p>}
+      </InfiniteScroll>
     </div>
   );
 };
