@@ -61,9 +61,17 @@ export const NewsCard = ({
 
   const markAsRead = async () => {
     try {
-      await axios.post("mark_read/", {
-        feed_id: item.id,
-      });
+      await axios.post(
+        "mark_read/",
+        {
+          feed_id: item.id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      );
     } catch (error) {
       console.error(error);
     }
