@@ -1,4 +1,4 @@
-.category-header {
+.header {
   text-transform: uppercase;
   display: flex;
   justify-content: space-between;
@@ -7,18 +7,20 @@
   margin-bottom: 1vw;
 }
 
-.category-header-actions {
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.buttons {
   display: flex;
   gap: 10px;
 }
 
-.category-subheader {
+.subheader {
   margin-bottom: 1vw;
 }
-
-.no-search-message {
-  padding: 20px;
-  text-align: center;
-  font-size: 1.2rem;
-  color: #666;
+.subtitle {
+  margin-bottom: 1vw;
 }

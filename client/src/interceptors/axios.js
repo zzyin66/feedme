@@ -1,26 +1,30 @@
-import axios from "axios";
+import axios from 'axios';
 
-axios.defaults.baseURL = "http://localhost:8000/api/";
+axios.defaults.baseURL = 'http://localhost:8000/api/';
 
 let refresh = false;
 
 axios.interceptors.response.use(
   (resp) => resp,
   async (error) => {
+    //  if login error, dont try to refresh
+    if (error.config.url === 'token/') {
+      return Promise.reject(error);
+    }
     if (error.response && error.response.status === 401) {
       if (!refresh) {
         refresh = true; // Prevent multiple refresh attempts
 
         try {
-          const refreshToken = localStorage.getItem("refresh_token");
+          const refreshToken = localStorage.getItem('refresh_token');
           const response = await axios.post(
-            "token/refresh/",
+            'token/refresh/',
             {
               refresh: refreshToken,
             },
             {
               headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
               },
               withCredentials: true,
             }
@@ -28,19 +32,19 @@ axios.interceptors.response.use(
 
           if (response.status === 200) {
             axios.defaults.headers.common[
-              "Authorization"
+              'Authorization'
             ] = `Bearer ${response.data.access}`;
-            localStorage.setItem("access_token", response.data.access);
-            localStorage.setItem("refresh_token", response.data.refresh);
+            localStorage.setItem('access_token', response.data.access);
+            localStorage.setItem('refresh_token', response.data.refresh);
 
             return axios(error.config);
           }
         } catch (refreshError) {
-          window.location.href = "/login";
+          window.location.href = '/login';
           return Promise.reject(refreshError);
         }
       } else {
-        window.location.href = "/login";
+        window.location.href = '/login';
       }
     }
 

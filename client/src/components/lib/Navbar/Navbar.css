@@ -41,6 +41,10 @@
   display: flex;
   align-items: center;
   transition: width 0.2s;
+
+  @media (max-width: 1200px) {
+    display: none;
+  }
 }
 .nav-header hr {
   position: absolute;
@@ -137,6 +141,14 @@
   flex-direction: column;
   z-index: 2;
   transition: width 0.2s, height 0.2s;
+
+  @media (max-width: 1200px) {
+    display: none;
+  }
+}
+
+.nav-footer:hover {
+  cursor: pointer;
 }
 
 .nav-footer-heading {
@@ -174,4 +186,10 @@
 .nav-footer-subtitle {
   color: var(--navbar-light-secondary);
   font-size: 0.6rem;
+}
+
+.nav-link-name {
+  @media (max-width: 1200px) {
+    display: none;
+  }
 }

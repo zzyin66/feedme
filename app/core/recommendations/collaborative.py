@@ -10,7 +10,8 @@ def generate_collaborative_recommendations(id):
         feed_history = user.feed_history.all()
         read_feed_ids = [feed.id for feed in feed_history]
         
-        keywords = user.keywords
+        # Merge user's keywords and preferences into one dictionary
+        keywords = {**user.keywords}
         
         if not keywords:
             # user has no keywords and cannot be grouped with similar users
